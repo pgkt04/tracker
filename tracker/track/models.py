@@ -12,6 +12,3 @@ class Record(models.Model):
 
     # determines if the current record is active or not, there should only be one.
     is_active = models.BooleanField(default=True)
-
-    class Meta:
-        ordering = ['created']
