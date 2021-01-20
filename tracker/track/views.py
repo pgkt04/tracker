@@ -32,8 +32,10 @@ class GetActiveRecord(APIView):
                 "uid": 1, "is_active": True}
         serializer = RecordSerializer(data=temp)
         if serializer.is_valid():
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class AddRecord(APIView):
     """
@@ -55,6 +57,26 @@ class AddRecord(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class ResetRecord(APIView):
+    """
+    Disables the latest record and assigns a new one
+    """
+
+    def get(self, request, format=None):
+        existing = Record.objects.filter(is_active=True)
+        for record in existing:
+            record.is_active = False
+            record.save(update_fields=['is_active'])
+        # assign a new record and save it
+        temp = {"created": int(time.time()), "ended": 0,
+                "uid": 1, "is_active": True}
+        serializer = RecordSerializer(data=temp)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class DisableAllRecords(APIView):
     """
     Sets all existing records as not active
@@ -65,4 +87,4 @@ class DisableAllRecords(APIView):
         for record in all_records:
             record.is_active = False
             record.save(update_fields=["is_active"])
-        return Response(status=status.HTTP_200_OK)
+        return Response({"status": "ok"}, status=status.HTTP_200_OK)

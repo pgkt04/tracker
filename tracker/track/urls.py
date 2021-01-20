@@ -10,4 +10,5 @@ urlpatterns = [
     path('add-record/', views.AddRecord.as_view()),
     path('disable-records/', views.DisableAllRecords.as_view()),
     path('latest-record/', views.GetActiveRecord.as_view()),
+    path('reset-record/', views.ResetRecord.as_view())
 ]
