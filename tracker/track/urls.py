@@ -6,5 +6,6 @@ from rest_framework.routers import DefaultRouter
 from track import views
 
 urlpatterns = [
-    path('', )
+    path('get-records/', views.GetAllRecords.as_view()),
+    path('add-record/', views.AddRecord.as_view()),
 ]

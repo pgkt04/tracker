@@ -1,14 +1,7 @@
 from django.db import models
 
 class Record(models.Model):
-    # epoch for the time started
-    created = models.IntegerField() 
-
-    # epoch for the time ended
-    ended = models.IntegerField()
-
-    # uid for the user
-    uid = models.IntegerField() 
-
-    # determines if the current record is active or not, there should only be one.
+    created = models.IntegerField(default=1) 
+    ended = models.IntegerField(default=0)
+    uid = models.IntegerField(default=0) 
     is_active = models.BooleanField(default=True)
