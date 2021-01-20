@@ -8,4 +8,6 @@ from track import views
 urlpatterns = [
     path('get-records/', views.GetAllRecords.as_view()),
     path('add-record/', views.AddRecord.as_view()),
+    path('disable-records/', views.DisableAllRecords.as_view()),
+    path('latest-record/', views.GetActiveRecord.as_view()),
 ]
