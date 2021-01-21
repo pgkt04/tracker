@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import Tracker2 from './Tracker2'
 
 export class Tracker extends Component {
 
@@ -27,7 +29,7 @@ export class Tracker extends Component {
                 }
             )
 
-        this.updateTimer =  setInterval(() => {
+        this.updateTimer = setInterval(() => {
             let current_time = Math.round(Date.now() / 1000)
             console.log("created: " + this.state.record_data.created)
             console.log("current time: " + current_time)
@@ -38,7 +40,7 @@ export class Tracker extends Component {
     }
 
     componentWillUnmount() {
-        clearInterval(this.updateTimer)    
+        clearInterval(this.updateTimer)
     }
 
     resetTimer() {
@@ -56,6 +58,13 @@ export class Tracker extends Component {
             <div>
                 <p>Time elapsed: {this.state.delta_time}</p>
                 <button onClick={this.resetTimer}>Reset</button>
+                <BrowserRouter>
+                    <Switch>
+                        <Route path="/test">
+                            <Tracker2 />
+                        </Route>
+                    </Switch>
+                </BrowserRouter>
             </div>
         )
     }
