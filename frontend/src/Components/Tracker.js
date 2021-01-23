@@ -21,8 +21,6 @@ export class Tracker extends Component {
         // fetch the user latest starting time
         axios.get("http://127.0.0.1:8000/latest-record/?format=json")
             .then(res => {
-                console.log(res)
-
                 this.setState({
                     record_data: res.data,
                     delta_time: current_time - res.data.created,
