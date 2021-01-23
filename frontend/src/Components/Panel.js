@@ -9,12 +9,10 @@ export class Panel extends Component {
             <div>
                 <BrowserRouter>
                     <Switch>
-
                         <Route exact path="/">
                             <button><Link to="/tracker">Tracker</Link></button>
                             <button><Link to="/to-do">To-do List</Link></button>
                         </Route>
-
                         <Route path="/tracker">
                             <Tracker />
                         </Route>
@@ -22,7 +20,6 @@ export class Panel extends Component {
                             <ToDoList />
                         </Route>
                     </Switch>
-
                 </BrowserRouter>
             </div>
         )

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import { api } from './Api'
 
 export class Tracker extends Component {
 
@@ -19,7 +20,7 @@ export class Tracker extends Component {
         let current_time = Math.round(Date.now() / 1000)
 
         // fetch the user latest starting time
-        axios.get("http://127.0.0.1:8000/latest-record/?format=json")
+        api.get("latest-record/?format=json")
             .then(res => {
                 this.setState({
                     record_data: res.data,
@@ -47,7 +48,7 @@ export class Tracker extends Component {
     }
 
     resetTimer() {
-        axios.get("http://127.0.0.1:8000/reset-record")
+        api.get("reset-record")
             .then(res => {
                 this.setState({ record_data: res.data })
             })
