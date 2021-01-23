@@ -4,68 +4,68 @@ import { api } from './Api'
 
 export class Tracker extends Component {
 
-    constructor(props) {
-        super(props)
+  constructor(props) {
+    super(props)
 
-        this.state = {
-            record_data: {},
-            delta_time: 0,
-            has_loaded: false
+    this.state = {
+      record_data: {},
+      delta_time: 0,
+      has_loaded: false
+    }
+
+    this.resetTimer = this.resetTimer.bind(this)
+  }
+
+  componentDidMount() {
+    let current_time = Math.round(Date.now() / 1000)
+
+    // fetch the user latest starting time
+    api.get("latest-record/?format=json")
+      .then(res => {
+        this.setState({
+          record_data: res.data,
+          delta_time: current_time - res.data.created,
+          has_loaded: true
+        })
+      })
+      .catch(
+        error => {
+          console.log("something went wrong")
         }
+      )
 
-        this.resetTimer = this.resetTimer.bind(this)
-    }
+    this.updateTimer = setInterval(() => {
+      current_time = Math.round(Date.now() / 1000)
+      this.setState({
+        delta_time: current_time - this.state.record_data.created,
+        has_loaded: true
+      })
+    }, 1000);
+  }
 
-    componentDidMount() {
-        let current_time = Math.round(Date.now() / 1000)
+  componentWillUnmount() {
+    clearInterval(this.updateTimer)
+  }
 
-        // fetch the user latest starting time
-        api.get("latest-record/?format=json")
-            .then(res => {
-                this.setState({
-                    record_data: res.data,
-                    delta_time: current_time - res.data.created,
-                    has_loaded: true
-                })
-            })
-            .catch(
-                error => {
-                    console.log("something went wrong")
-                }
-            )
+  resetTimer() {
+    api.get("reset-record")
+      .then(res => {
+        this.setState({ record_data: res.data })
+      })
+      .catch(error => {
+        console.log("failed to reset" + error)
+      })
+  }
 
-        this.updateTimer = setInterval(() => {
-            current_time = Math.round(Date.now() / 1000)
-            this.setState({
-                delta_time: current_time - this.state.record_data.created,
-                has_loaded: true
-            })
-        }, 1000);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.updateTimer)
-    }
-
-    resetTimer() {
-        api.get("reset-record")
-            .then(res => {
-                this.setState({ record_data: res.data })
-            })
-            .catch(error => {
-                console.log("failed to reset" + error)
-            })
-    }
-
-    render() {
-        let msg = this.state.has_loaded ? this.state.delta_time : "loading"
-        return (
-            <div>
-                <p>Time elapsed: {msg}</p>
-                <button onClick={this.resetTimer}>Reset</button>
-            </div>
-        )
-    }
+  render() {
+    let msg = this.state.has_loaded ? this.state.delta_time : "loading"
+    return (
+      <div>
+        <p>Time elapsed: {msg}</p>
+        <button onClick={this.resetTimer}>Reset</button>
+      </div>
+    )
+  }
 }
 
 export default Tracker
