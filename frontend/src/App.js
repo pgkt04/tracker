@@ -1,12 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
-import Tracker from './Components/Tracker';
+import Panel from './Components/Panel';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Tracker />
+        <Panel/>
       </header>
     </div>
   );

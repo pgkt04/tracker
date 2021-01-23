@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import Tracker2 from './Tracker2'
 
 export class Tracker extends Component {
 
@@ -10,18 +8,26 @@ export class Tracker extends Component {
 
         this.state = {
             record_data: {},
-            delta_time: 0
+            delta_time: 0,
+            has_loaded: false
         }
 
         this.resetTimer = this.resetTimer.bind(this)
     }
 
     componentDidMount() {
+        let current_time = Math.round(Date.now() / 1000)
+
         // fetch the user latest starting time
         axios.get("http://127.0.0.1:8000/latest-record/?format=json")
             .then(res => {
                 console.log(res)
-                this.setState({ record_data: res.data })
+
+                this.setState({
+                    record_data: res.data,
+                    delta_time: current_time - res.data.created,
+                    has_loaded: true
+                })
             })
             .catch(
                 error => {
@@ -30,11 +36,10 @@ export class Tracker extends Component {
             )
 
         this.updateTimer = setInterval(() => {
-            let current_time = Math.round(Date.now() / 1000)
-            console.log("created: " + this.state.record_data.created)
-            console.log("current time: " + current_time)
+            current_time = Math.round(Date.now() / 1000)
             this.setState({
-                delta_time: current_time - this.state.record_data.created
+                delta_time: current_time - this.state.record_data.created,
+                has_loaded: true
             })
         }, 1000);
     }
@@ -54,17 +59,11 @@ export class Tracker extends Component {
     }
 
     render() {
+        let msg = this.state.has_loaded ? this.state.delta_time : "loading"
         return (
             <div>
-                <p>Time elapsed: {this.state.delta_time}</p>
+                <p>Time elapsed: {msg}</p>
                 <button onClick={this.resetTimer}>Reset</button>
-                <BrowserRouter>
-                    <Switch>
-                        <Route path="/test">
-                            <Tracker2 />
-                        </Route>
-                    </Switch>
-                </BrowserRouter>
             </div>
         )
     }
