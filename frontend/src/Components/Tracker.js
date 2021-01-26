@@ -20,7 +20,7 @@ export class Tracker extends Component {
     let current_time = Math.round(Date.now() / 1000)
 
     // fetch the user latest starting time
-    api.get("latest-record/?format=json")
+    api.get("latest-record")
       .then(res => {
         this.setState({
           record_data: res.data,
