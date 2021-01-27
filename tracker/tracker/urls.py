@@ -22,5 +22,6 @@ router = routers.SimpleRouter()
 
 urlpatterns = [
     path('', include('track.urls')),
+    path('auth/', include('Users.urls')),
     path('admin/', admin.site.urls),
 ]
