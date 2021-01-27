@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'track.apps.TrackConfig',
     'Users.apps.UsersConfig',
     'rest_framework',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -80,6 +81,18 @@ WSGI_APPLICATION = 'tracker.wsgi.application'
 #         'rest_framework.renderers.JSONRenderer',
 #     )
 # }
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
+
+# use for production
+AUTH_USER_MODEL = 'Users.Account'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases

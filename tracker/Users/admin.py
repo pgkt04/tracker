@@ -1,3 +1,7 @@
 from django.contrib import admin
+from track.models import Record
+from Users.models import Account
 
-# Register your models here.
+
+admin.site.register(Record)
+admin.site.register(Account)
