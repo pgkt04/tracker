@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter, Switch } from 'react-router-dom'
+import { BrowserRouter, Redirect, Switch } from 'react-router-dom'
 import { api } from '../Api'
 
 export class Auth extends Component {
@@ -13,7 +13,7 @@ export class Auth extends Component {
     super(props)
 
     this.state = {
-      has_token: false
+      verified: false
     }
 
   }
@@ -21,16 +21,29 @@ export class Auth extends Component {
   componentDidMount() {
     // do an initial check and redirect if needed
     let token = localStorage.getItem('token')
-    
-    if (token) {
-      // verify
-      api.post()
-    }
 
+    if (token) {
+      api.post('auth/verify', {}, {
+        headers: {
+          'Authorization': `Token ${token}`
+        }
+      })
+        .then(response => {
+          console.log(response)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }
 
   }
 
   render() {
+    
+    if (this.state.verified) {
+      return <Redirect to="panel/" />
+    }
+
     return (
       <div>
         <BrowserRouter>
