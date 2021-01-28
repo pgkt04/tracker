@@ -17,11 +17,12 @@ class GetAllRecords(generics.ListAPIView):
 
 class GetActiveRecord(APIView):
     """
-    Gets the current active record
+    Gets the current active record from the current login
     """
 
     def get(self, request, format=None):
-        existing = Record.objects.filter(is_active=True)
+        user = request.user
+        existing = Record.objects.filter(uid=user.id, is_active=True)
         if len(existing) > 0:
             # an existing one exists, lets return that instead
             latest = RecordSerializer(existing[0])
@@ -29,7 +30,7 @@ class GetActiveRecord(APIView):
 
         # we need to create a new record and return that instead
         temp = {"created": int(time.time()), "ended": 0,
-                "uid": 1, "is_active": True}
+                "uid": user.id, "is_active": True}
         serializer = RecordSerializer(data=temp)
         if serializer.is_valid():
             serializer.save()
@@ -43,13 +44,14 @@ class AddRecord(APIView):
     """
 
     def post(self, request, format=None):
-        # check for existing record
-        existing = Record.objects.filter(is_active=True)
+        user = request.user
+
+        existing = Record.objects.filter(uid=user.id, is_active=True)
         if len(existing) > 0:
             return Response({"status": "existing record already exists"}, status.HTTP_400_BAD_REQUEST)
 
         temp = {"created": int(time.time()), "ended": 0,
-                "uid": 1, "is_active": True}
+                "uid": user.id, "is_active": True}
         serializer = RecordSerializer(data=temp)
         if serializer.is_valid():
             serializer.save()
@@ -60,16 +62,22 @@ class AddRecord(APIView):
 class ResetRecord(APIView):
     """
     Disables the latest record and assigns a new one
+
+    to-do:
+    set the ended time
     """
 
     def get(self, request, format=None):
-        existing = Record.objects.filter(is_active=True)
+        user = request.user
+
+        existing = Record.objects.filter(uid=user.id, is_active=True)
         for record in existing:
             record.is_active = False
             record.save(update_fields=['is_active'])
+
         # assign a new record and save it
         temp = {"created": int(time.time()), "ended": 0,
-                "uid": 1, "is_active": True}
+                "uid": user.id, "is_active": True}
         serializer = RecordSerializer(data=temp)
         if serializer.is_valid():
             serializer.save()
