@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
-import { BrowserRouter, Redirect, Switch } from 'react-router-dom'
+import { BrowserRouter, Link, Redirect, Route, Switch } from 'react-router-dom'
 import { api } from '../Api'
+import Login from './Login'
+import Register from './Register'
 
 export class Auth extends Component {
 
@@ -39,19 +41,22 @@ export class Auth extends Component {
   }
 
   render() {
-    
     if (this.state.verified) {
       return <Redirect to="panel/" />
     }
-
     return (
-      <div>
-        <BrowserRouter>
-          <Switch>
-
-          </Switch>
-        </BrowserRouter>
-      </div>
+      <Switch>
+        <Route exact path="/">
+          <button><Link to="/login">Login</Link></button>
+          <button><Link to="/register">Register</Link></button>
+        </Route>
+        <Route path="/login">
+          <Login />
+        </Route>
+        <Route path="/register">
+          <Register />
+        </Route>
+      </Switch>
     )
   }
 }
