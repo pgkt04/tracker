@@ -79,3 +79,12 @@ class LoginUser(APIView):
                 token, created = Token.objects.get_or_create(user=user)
                 return Response({'token': token.key})
         return Response({'detail': 'Invalid credentials or account not found'})
+
+
+class VerifyToken(APIView):
+    """
+    Simple check for tokens to validate them
+    """
+
+    def post(self, request, format=None):
+        return Response({'detail': 'success'})

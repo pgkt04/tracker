@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import Tracker from './Tracker'
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom'
-import ToDoList from './ToDoList'
+import ToDoList from './Features/ToDoList'
+import Auth from './Auth/Auth'
+import Tracker from './Features/Tracker'
 
 export class Panel extends Component {
   render() {
@@ -10,6 +11,9 @@ export class Panel extends Component {
         <BrowserRouter>
           <Switch>
             <Route exact path="/">
+              <Auth />
+            </Route>
+            <Route path="/panel">
               <button><Link to="/tracker">Tracker</Link></button>
               <button><Link to="/to-do">To-do List</Link></button>
             </Route>
