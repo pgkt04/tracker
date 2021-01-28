@@ -13,13 +13,14 @@ export class Auth extends Component {
     super(props)
 
     this.state = {
+      has_token: false
     }
 
   }
 
   componentDidMount() {
     // do an initial check and redirect if needed
-    let token = localStorage.getItem('bearer')
+    let token = localStorage.getItem('token')
     
     if (token) {
       // verify
