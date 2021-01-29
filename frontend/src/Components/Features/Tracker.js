@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { api } from '../Api'
+import { getAxiosInstance } from '../Api'
 
 export class Tracker extends Component {
 
@@ -13,13 +13,15 @@ export class Tracker extends Component {
     }
 
     this.resetTimer = this.resetTimer.bind(this)
+    let token = localStorage.getItem('token')
+    this.api = getAxiosInstance({ headers: { 'Authorization': `token ${token}` } })
   }
 
   componentDidMount() {
     let current_time = Math.round(Date.now() / 1000)
-
     // fetch the user latest starting time
-    api.get("latest-record")
+
+    this.api.get("latest-record/")
       .then(res => {
         this.setState({
           record_data: res.data,
@@ -47,7 +49,7 @@ export class Tracker extends Component {
   }
 
   resetTimer() {
-    api.get("reset-record")
+    this.api.get("reset-record/")
       .then(res => {
         this.setState({ record_data: res.data })
       })

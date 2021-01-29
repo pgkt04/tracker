@@ -1,4 +1,3 @@
-from re import L
 from django.shortcuts import render
 from django.contrib.auth import authenticate
 from django.core.serializers import serialize

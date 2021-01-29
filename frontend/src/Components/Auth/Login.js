@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { api } from '../Api'
+import { getAxiosInstance } from '../Api'
 
 export class Login extends Component {
 
@@ -15,6 +15,7 @@ export class Login extends Component {
         this.loginUser = this.loginUser.bind(this)
         this.usernameHandler = this.usernameHandler.bind(this)
         this.passwordHandler = this.passwordHandler.bind(this)
+        this.api = getAxiosInstance({ })
     }
 
     loginUser(e) {

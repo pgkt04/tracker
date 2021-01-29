@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { BrowserRouter, Link, Redirect, Route, Switch } from 'react-router-dom'
+import { Link, Redirect, Route } from 'react-router-dom'
 import { api } from '../Api'
 import Login from './Login'
 import Register from './Register'
@@ -32,7 +32,7 @@ export class Auth extends Component {
       })
         .then(response => {
           console.log(response)
-          if (response.data.detail == 'success') {
+          if (response.data.detail === 'success') {
             this.setState({ verified: true })
           }
         })

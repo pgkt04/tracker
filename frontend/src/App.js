@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import Panel from './Components/Panel';
 import Auth from './Components/Auth/Auth';

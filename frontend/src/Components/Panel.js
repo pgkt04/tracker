@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'
-import { BrowserRouter, Switch, Route, Link } from 'react-router-dom'
+import { Route, Link } from 'react-router-dom'
 import ToDoList from './Features/ToDoList'
-import Auth from './Auth/Auth'
 import Tracker from './Features/Tracker'
 
 export class Panel extends Component {
