@@ -25,13 +25,16 @@ export class Auth extends Component {
     let token = localStorage.getItem('token')
 
     if (token) {
-      api.post('auth/verify', {}, {
+      api.post('auth/verify/', {}, {
         headers: {
           'Authorization': `Token ${token}`
         }
       })
         .then(response => {
           console.log(response)
+          if (response.data.detail == 'success') {
+            this.setState({ verified: true })
+          }
         })
         .catch(error => {
           console.log(error)

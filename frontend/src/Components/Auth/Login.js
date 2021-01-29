@@ -9,6 +9,7 @@ export class Login extends Component {
         this.state = {
             username: '',
             password: '',
+            loggged_in: false,
         }
 
         this.loginUser = this.loginUser.bind(this)
@@ -18,6 +19,29 @@ export class Login extends Component {
 
     loginUser(e) {
         e.preventDefault()
+
+        api.post('auth/login/',
+            {
+                'username': this.state.username,
+                'password': this.state.password,
+            })
+            .then(response => {
+                // read the token from the response and set it
+                console.log(response)
+                let token = response.data.token
+                if (token) {
+                    this.setState({ loggged_in: true })
+                    localStorage.setItem('token', token)
+                } else {
+                    alert('Invalid credentials or account not found')
+                }
+            })
+            .catch(error => {
+                console.log(error)
+                alert('error has occured, please check the console')
+            })
+
+        // redirect if successful
     }
 
     usernameHandler(e) {
