@@ -10,6 +10,9 @@ from .models import Login, Account
 from .serializer import AccountSerializer, LoginSerializer
 
 
+from rest_framework.request import Request
+
+
 class ListUsers(generics.ListAPIView):
     """
     Lists all users
@@ -93,6 +96,7 @@ class Logout(APIView):
     """
     Deactivate a token
     """
-    def post(self, request, format=None):
-        pass
 
+    def post(self, request, format=None):
+        request.user.auth_token.delete()
+        return Response({'detail': 'Token has been deleted'})

@@ -14,8 +14,8 @@ class Account(AbstractBaseUser):
 
     objects = AccountManager()
 
-    def __str__(self):
-        return self.username
+    # def __str__(self):
+    #     return self.username
  
 class Login(models.Model):
     username = models.CharField(max_length=100)

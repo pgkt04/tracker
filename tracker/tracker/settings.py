@@ -82,6 +82,9 @@ WSGI_APPLICATION = 'tracker.wsgi.application'
 #     )
 # }
 
+
+# users.authentication.CustomTokenAuthentication
+# ^^^ use the above token later
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',

@@ -12,3 +12,4 @@ class CustomTokenAuthentication(TokenAuthentication):
         pass
 
     def authenticate_credentials(self, key):
+        pass
