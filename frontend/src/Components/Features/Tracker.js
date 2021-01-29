@@ -9,12 +9,12 @@ export class Tracker extends Component {
     this.state = {
       record_data: {},
       delta_time: 0,
-      has_loaded: false
+      has_loaded: false,
+      token: localStorage.getItem('token'),
     }
 
     this.resetTimer = this.resetTimer.bind(this)
-    let token = localStorage.getItem('token')
-    this.api = getAxiosInstance({ headers: { 'Authorization': `token ${token}` } })
+    this.api = getAxiosInstance({ headers: { 'Authorization': `token ${this.state.token}` } })
   }
 
   componentDidMount() {
