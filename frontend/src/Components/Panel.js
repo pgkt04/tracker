@@ -7,7 +7,7 @@ export class Panel extends Component {
   render() {
     return (
       <Fragment>
-        <Route path="/panel">
+        <Route exact path="/panel">
           <button><Link to="/tracker">Tracker</Link></button>
           <button><Link to="/to-do">To-do List</Link></button>
         </Route>
