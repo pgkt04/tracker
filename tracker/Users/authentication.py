@@ -8,3 +8,7 @@ class CustomTokenAuthentication(TokenAuthentication):
     Checks if the token is valid, if it isnt then we 
     raise an error so we can generate a new token
     """
+    def authenticate():
+        pass
+
+    def authenticate_credentials(self, key):

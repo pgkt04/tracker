@@ -93,3 +93,6 @@ class Logout(APIView):
     """
     Deactivate a token
     """
+    def post(self, request, format=None):
+        pass
+
