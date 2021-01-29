@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { BrowserRouter, Link, Redirect, Route, Switch } from 'react-router-dom'
 import { api } from '../Api'
 import Login from './Login'
@@ -48,7 +48,7 @@ export class Auth extends Component {
       return <Redirect to="panel/" />
     }
     return (
-      <Switch>
+      <Fragment>
         <Route exact path="/">
           <button><Link to="/login">Login</Link></button>
           <button><Link to="/register">Register</Link></button>
@@ -59,7 +59,7 @@ export class Auth extends Component {
         <Route path="/register">
           <Register />
         </Route>
-      </Switch>
+      </Fragment>
     )
   }
 }
