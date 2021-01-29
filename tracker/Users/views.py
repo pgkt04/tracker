@@ -87,3 +87,9 @@ class VerifyToken(APIView):
 
     def post(self, request, format=None):
         return Response({'detail': 'success'})
+
+
+class Logout(APIView):
+    """
+    Deactivate a token
+    """
