@@ -31,7 +31,7 @@ export class Tracker extends Component {
       })
       .catch(
         error => {
-          console.log("something went wrong")
+          console.log("something went wrong" + error)
         }
       )
 
