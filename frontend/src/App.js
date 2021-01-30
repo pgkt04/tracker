@@ -9,7 +9,8 @@ function App() {
       <header className="App-header">
         <BrowserRouter>
           <Switch>
-            <Auth />
+            <Route path="/" component={Auth}>
+            </Route>
           </Switch>
         </BrowserRouter>
       </header>

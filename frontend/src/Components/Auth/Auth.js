@@ -18,31 +18,39 @@ export class Auth extends Component {
     this.state = {
       verified: false,
       force_refresh: false,
-      token: localStorage.getItem('token'),
     }
 
-    this.api = getAxiosInstance({ headers: { 'Authorization': `token ${this.state.token}` } })
+    this.doUpdate = this.doUpdate.bind(this)
   }
 
-  componentDidMount() {
-    // do an initial check and redirect if needed
-
-    // refresh the token
-    this.setState({ 'token': localStorage.getItem('token') })
+  doUpdate() {
+    console.log('performing update')
+    let api = getAxiosInstance({ headers: { 'Authorization': `token ${localStorage.getItem('token')}` } })
 
     if (this.state.token) {
-      this.api.post('auth/verify/')
+      api.post('auth/verify/')
         .then(response => {
           console.log(response)
-          if (response.data.detail === 'success') {
-            this.setState({ verified: true })
-          }
+          this.setState({ verified: (response.data.detail === 'success') })
         })
         .catch(error => {
           console.log(error)
         })
     }
+  }
 
+  componentDidMount() {
+    this.doUpdate()
+  }
+
+  componentDidUpdate() {
+    try {
+      if (this.props.location.state.update) {
+        this.doUpdate()
+        this.props.location.state.update = false;
+      }
+    } catch (e) {
+    }
   }
 
   render() {
