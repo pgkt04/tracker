@@ -25,9 +25,9 @@ export class Auth extends Component {
 
   doUpdate() {
     console.log('performing update')
-    let api = getAxiosInstance({ headers: { 'Authorization': `token ${localStorage.getItem('token')}` } })
-
-    if (this.state.token) {
+    let token = localStorage.getItem('token')
+    let api = getAxiosInstance({ headers: { 'Authorization': `token ${token}` } })
+    if (token) {
       api.post('auth/verify/')
         .then(response => {
           console.log(response)
@@ -46,7 +46,9 @@ export class Auth extends Component {
   componentDidUpdate() {
     try {
       if (this.props.location.state.update) {
+        console.log(localStorage.getItem('token'))
         this.doUpdate()
+        console.log('update finished')
         this.props.location.state.update = false;
       }
     } catch (e) {
