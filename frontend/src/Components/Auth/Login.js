@@ -61,7 +61,7 @@ export class Login extends Component {
 
     if (this.state.loggged_in) {
       return <Redirect to={{
-        pathname: '/',
+        pathname: '/panel',
         state: { update: true }
       }} />
     }

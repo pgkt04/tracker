@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Route, Link, Redirect } from 'react-router-dom'
+import { Route, Link, Redirect, BrowserRouter, Switch } from 'react-router-dom'
 import ToDoList from './Features/ToDoList'
 import Tracker from './Features/Tracker'
 import { getAxiosInstance } from './Api'
@@ -26,7 +26,7 @@ export class Panel extends Component {
   render() {
     // return home once we logged out
     if (this.state.isLoggedOut) {
-      return <Redirect to="/" />
+      return <Redirect to={{ pathname: '/', state: { update: true } }} />
     }
 
     // display features
@@ -37,12 +37,8 @@ export class Panel extends Component {
           <button><Link to="/to-do">To-do List</Link></button>
           <button onClick={this.logoutUser}>Log out</button>
         </Route>
-        <Route path="/tracker">
-          <Tracker />
-        </Route>
-        <Route path="/to-do">
-          <ToDoList />
-        </Route>
+        <Route path="/tracker" component={Tracker} />
+        <Route path="/to-do" component={ToDoList} />
       </Fragment>
     )
   }
