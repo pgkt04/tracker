@@ -9,10 +9,7 @@ function App() {
       <header className="App-header">
         <BrowserRouter>
           <Switch>
-            <Route exact path="/">
-              <Auth />
-            </Route>
-            <Panel />
+            <Auth />
           </Switch>
         </BrowserRouter>
       </header>

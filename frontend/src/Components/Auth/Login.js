@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
 import { api } from '../Api'
 
 export class Login extends Component {
@@ -30,8 +31,8 @@ export class Login extends Component {
                 console.log(response)
                 let token = response.data.token
                 if (token) {
-                    this.setState({ loggged_in: true })
                     localStorage.setItem('token', token)
+                    this.setState({ loggged_in: true })
                 } else {
                     alert('Invalid credentials or account not found')
                 }
@@ -57,6 +58,11 @@ export class Login extends Component {
     }
 
     render() {
+
+        if (this.state.loggged_in) {
+            return <Redirect to="/" />
+        }
+
         return (
             <form>
                 <p>username</p>

@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Link, Redirect, Route } from 'react-router-dom'
 import { getAxiosInstance } from '../Api'
+import Panel from '../Panel'
 import Login from './Login'
 import Register from './Register'
 
@@ -16,7 +17,8 @@ export class Auth extends Component {
 
     this.state = {
       verified: false,
-      token: localStorage.getItem('token')
+      force_refresh: false,
+      token: localStorage.getItem('token'),
     }
 
     this.api = getAxiosInstance({ headers: { 'Authorization': `token ${this.state.token}` } })
@@ -24,6 +26,9 @@ export class Auth extends Component {
 
   componentDidMount() {
     // do an initial check and redirect if needed
+
+    // refresh the token
+    this.setState({ 'token': localStorage.getItem('token') })
 
     if (this.state.token) {
       this.api.post('auth/verify/')
@@ -42,7 +47,12 @@ export class Auth extends Component {
 
   render() {
     if (this.state.verified) {
-      return <Redirect to="panel/" />
+      return (
+        <Fragment>
+          <Redirect to="/panel/" />
+          <Panel />
+        </Fragment>
+      )
     }
     return (
       <Fragment>
