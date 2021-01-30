@@ -1,18 +1,12 @@
 import React, { Component, Fragment } from 'react'
 import { getAxiosInstance } from '../Api'
 
-export const IsVerified = () => {
+export const isVerified = () => {
   let token = localStorage.getItem('token')
   if (token) {
     let api = getAxiosInstance({ headers: { 'Authorization': `token ${token}` } })
-
-    api.post('auth/verify/')
-      .then(response => {
-        return response.data.detail === 'success'
-      })
-      .catch(error => {
-        console.log(error)
-      })
+    let promise = api.post('auth/verify/')
+    let promiseData = promise.then(response => response.data)
+    return promiseData
   }
-  return false
 }
