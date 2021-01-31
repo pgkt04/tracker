@@ -4,8 +4,6 @@ import Login from './Auth/Login';
 import Register from './Auth/Register';
 import Panel from './Panel';
 import { isVerifiedAsync } from './Auth/Auth'
-import Tracker from './Features/Tracker';
-import ToDoList from './Features/ToDoList';
 
 export class Routes extends Component {
 
@@ -39,7 +37,6 @@ export class Routes extends Component {
                     <Route path="/login" component={Login} />
                     <Route path="/register" component={Register} />
                     <Route path="/panel" component={Panel} />
-
                 </Switch>
             </Router>
         )

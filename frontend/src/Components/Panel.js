@@ -30,9 +30,9 @@ export class Panel extends Component {
 
   render() {
     // return home once we logged out
-    // if (this.state.isLoggedOut) {
-    //   return <Redirect to={{ pathname: '/', state: { update: true } }} />
-    // }
+    if (this.state.isLoggedOut) {
+      return <Redirect to={{ pathname: '/', state: { update: true } }} />
+    }
     console.log("hello???? please work")
     // display features
     return (
