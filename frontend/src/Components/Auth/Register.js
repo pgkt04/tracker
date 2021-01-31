@@ -10,6 +10,7 @@ export class Register extends Component {
         this.state = {
             username: '',
             password: '',
+            registered: false,
         }
 
         this.registerUser = this.registerUser.bind(this)
@@ -19,6 +20,28 @@ export class Register extends Component {
 
     registerUser(e) {
         e.preventDefault()
+
+        api.post('auth/register/',
+            {
+                'username': this.state.username,
+                'password': this.state.password,
+            })
+            .then(response => {
+                // read the token from the response and set it
+                console.log(response)
+                try {
+                    if (response.data.detail === 'success') {
+                        this.setState({ registered: true })
+                    }
+                } catch (e) {
+                    // pass
+                }
+            })
+            .catch(error => {
+                console.log(error)
+                alert('error has occured, please check the console')
+            })
+
     }
 
     usernameHandler(e) {

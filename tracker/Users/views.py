@@ -17,6 +17,7 @@ class ListUsers(generics.ListAPIView):
     """
     Lists all users
     """
+    permission_classes = [permissions.AllowAny]
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
     permission_classes = [permissions.AllowAny]
