@@ -60,9 +60,18 @@ export class Tracker extends Component {
 
   render() {
     let msg = this.state.has_loaded ? this.state.delta_time : "loading"
+    let delta = Number(this.state.delta_time)
+    let hours = Math.floor(delta / 3600);
+    let minutes = Math.floor(delta % 3600 / 60);
+    let seconds = Math.floor(delta % 3600 % 60);
+    let hDisplay = hours > 0 ? hours + (hours == 1 ? " hour, " : " hours, ") : "";
+    let mDisplay = minutes > 0 ? minutes + (minutes == 1 ? " minute, " : " minutes, ") : "";
+    let sDisplay = seconds > 0 ? seconds + (seconds == 1 ? " second" : " seconds") : "";
+
     return (
       <div>
         <p>Time elapsed: {msg}</p>
+        <p>{hDisplay} {mDisplay} {sDisplay}</p>
         <button onClick={this.resetTimer}>Reset</button>
       </div>
     )

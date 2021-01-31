@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 import Login from './Auth/Login';
 import Register from './Auth/Register';
-import ToDoList from './Features/ToDoList';
-import Tracker from './Features/Tracker';
 import Panel from './Panel';
-import { isVerified } from './Auth/Auth'
+import { isVerifiedAsync } from './Auth/Auth'
+import Tracker from './Features/Tracker';
+import ToDoList from './Features/ToDoList';
 
 export class Routes extends Component {
 
@@ -17,17 +17,15 @@ export class Routes extends Component {
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         try {
-            isVerified().then(response => {
-                this.setState({ verified: response.detail === 'success' })
-            })
+            let result = await isVerifiedAsync()
+            console.log(result)
         } catch (e) {
         }
     }
 
     render() {
-        console.log(this.state.verified)
         let redir = this.state.verified ? <Redirect to="/panel" /> : null
 
         return (
@@ -41,8 +39,7 @@ export class Routes extends Component {
                     <Route path="/login" component={Login} />
                     <Route path="/register" component={Register} />
                     <Route path="/panel" component={Panel} />
-                    <Route path="/tracker" component={Tracker} />
-                    <Route path="/to-do" component={ToDoList} />
+
                 </Switch>
             </Router>
         )

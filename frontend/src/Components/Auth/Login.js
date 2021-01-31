@@ -42,7 +42,6 @@ export class Login extends Component {
         alert('error has occured, please check the console')
       })
 
-    // redirect if successful
   }
 
   usernameHandler(e) {
