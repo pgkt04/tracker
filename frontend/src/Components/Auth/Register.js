@@ -26,6 +26,7 @@ export class Register extends Component {
                 'username': this.state.username,
                 'password': this.state.password,
             })
+
             .then(response => {
                 // read the token from the response and set it
                 console.log(response)
@@ -57,6 +58,15 @@ export class Register extends Component {
     }
 
     render() {
+
+        if (this.state.registered) {
+            return <Redirect to={{
+                pathname: '/login',
+                state: { update: true }
+            }} />
+        }
+
+
         return (
             <form>
                 <p>username</p>

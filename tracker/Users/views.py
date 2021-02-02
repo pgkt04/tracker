@@ -38,7 +38,8 @@ class RegisterUser(APIView):
 
             Account.objects.create_user(
                 serializer.validated_data['username'], serializer.validated_data['password'])
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response({'detail': 'success'})
+            # return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors)
 
 
