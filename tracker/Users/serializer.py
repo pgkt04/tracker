@@ -5,7 +5,9 @@ from .models import Account, Login
 class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
-        fields = ['id', 'username', 'password', 'created', 'is_active']
+        fields = ['id', 'username', 'password',
+                  'email', 'is_active', 'created', 'is_staff']
+
 
 class LoginSerializer(serializers.ModelSerializer):
     class Meta:

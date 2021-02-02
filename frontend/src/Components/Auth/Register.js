@@ -74,7 +74,7 @@ export class Register extends Component {
                 <p>password</p>
                 <input onChange={this.passwordHandler} value={this.state.password} type="password" />
                 <br />
-                <button onClick={this.loginUser} type="submit">Submit</button>
+                <button onClick={this.registerUser} type="submit">Submit</button>
             </form>
         )
     }

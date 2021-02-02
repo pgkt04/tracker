@@ -20,7 +20,6 @@ class ListUsers(generics.ListAPIView):
     permission_classes = [permissions.AllowAny]
     queryset = Account.objects.all()
     serializer_class = AccountSerializer
-    permission_classes = [permissions.AllowAny]
 
 
 class RegisterUser(APIView):
@@ -37,7 +36,11 @@ class RegisterUser(APIView):
                 return Response({'detail': 'username already exists'}, status=status.HTTP_200_OK)
 
             Account.objects.create_user(
-                serializer.validated_data['username'], serializer.validated_data['password'])
+                '',
+                serializer.validated_data['username'],
+                serializer.validated_data['password']
+            )
+            
             return Response({'detail': 'success'})
             # return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors)
