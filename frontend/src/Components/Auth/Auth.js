@@ -1,4 +1,3 @@
-import React, { Component, Fragment } from 'react'
 import { getAxiosInstance } from '../Api'
 
 export function isVerified() {

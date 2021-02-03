@@ -1,9 +1,10 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 import Login from './Auth/Login';
 import Register from './Auth/Register';
 import Panel from './Panel';
 import { isVerifiedAsync } from './Auth/Auth'
+import { Button } from 'react-bootstrap'
 
 export class Routes extends Component {
 
@@ -30,6 +31,7 @@ export class Routes extends Component {
             <Router>
                 {redir}
                 <Route exact path="/">
+                    <Button>Test</Button>
                     <button><Link to="/login">Login</Link></button>
                     <button><Link to="/register"> Register</Link></button>
                 </Route>
