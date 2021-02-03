@@ -31,9 +31,8 @@ export class Routes extends Component {
             <Router>
                 {redir}
                 <Route exact path="/">
-                    <Button>Test</Button>
-                    <button><Link to="/login">Login</Link></button>
-                    <button><Link to="/register"> Register</Link></button>
+                    <Link to="/login"><Button>Login</Button></Link>
+                    <Link to="/register"><Button>Register</Button></Link>
                 </Route>
                 <Switch>
                     <Route path="/login" component={Login} />
