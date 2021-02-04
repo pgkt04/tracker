@@ -18,7 +18,7 @@ class ListUsers(generics.ListAPIView):
     Lists all users
     """
     permission_classes = [permissions.AllowAny]
-    queryset = Account.objects.all()    
+    queryset = Account.objects.all()
     serializer_class = AccountSerializer
 
 
@@ -90,11 +90,16 @@ class LoginUser(APIView):
 
 class VerifyToken(APIView):
     """
-    Simple check for tokens to validate them
+    Simple check for tokens to validate them and provides additional 
+    data about the user
     """
 
     def post(self, request, format=None):
-        return Response({'detail': 'success'})
+        username = request.user.username
+        return Response({
+            'detail': 'success',
+            'username': username,
+        })
 
 
 class Logout(APIView):

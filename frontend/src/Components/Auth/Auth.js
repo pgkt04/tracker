@@ -10,12 +10,15 @@ export function isVerified() {
   }
 }
 
+/**
+ * Gets data for verification if a token has been set in localstorage
+ */
 export async function isVerifiedAsync() {
   let token = localStorage.getItem('token')
   if (token) {
     let api = getAxiosInstance({ headers: { 'Authorization': `token ${token}` } })
     const response = await api.post('auth/verify/')
-    return response.data.detail === 'success'
+    // return response.data.detail === 'success'
+    return response.data
   }
-  return false
 }

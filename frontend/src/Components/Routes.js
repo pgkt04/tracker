@@ -14,7 +14,7 @@ export class Routes extends Component {
 
         this.state = {
             verified: false,
-            should_update: false,
+            username: '',
         }
 
         this.updateVerified = this.updateVerified.bind(this)
