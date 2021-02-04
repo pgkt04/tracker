@@ -4,7 +4,8 @@ import Login from './Auth/Login';
 import Register from './Auth/Register';
 import Panel from './Panel';
 import { isVerifiedAsync } from './Auth/Auth'
-import { Button } from 'react-bootstrap'
+import { Button, Form } from 'react-bootstrap'
+import Navigation from './Navigation';
 
 export class Routes extends Component {
 
@@ -31,8 +32,15 @@ export class Routes extends Component {
             <Router>
                 {redir}
                 <Route exact path="/">
-                    <Link to="/login"><Button>Login</Button></Link>
-                    <Link to="/register"><Button>Register</Button></Link>
+                    <Navigation />
+                    <Form>
+                        <Form.Group>
+                            <Link to="/login"><Button block>Login</Button></Link>
+                        </Form.Group>
+                        <Form.Group>
+                            <Link to="/register"><Button block>Register</Button></Link>
+                        </Form.Group>
+                    </Form>
                 </Route>
                 <Switch>
                     <Route path="/login" component={Login} />
