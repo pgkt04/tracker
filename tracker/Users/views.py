@@ -18,7 +18,7 @@ class ListUsers(generics.ListAPIView):
     Lists all users
     """
     permission_classes = [permissions.AllowAny]
-    queryset = Account.objects.all()
+    queryset = Account.objects.all()    
     serializer_class = AccountSerializer
 
 
@@ -40,7 +40,7 @@ class RegisterUser(APIView):
                 serializer.validated_data['username'],
                 serializer.validated_data['password']
             )
-            
+
             return Response({'detail': 'success'})
             # return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors)

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Button, Form, Row } from 'react-bootstrap'
 import { Redirect } from 'react-router-dom'
 import { api } from '../Api'
 
@@ -66,16 +67,21 @@ export class Register extends Component {
             }} />
         }
 
-
         return (
-            <form>
-                <p>username</p>
-                <input onChange={this.usernameHandler} value={this.state.username} type="text" />
-                <p>password</p>
-                <input onChange={this.passwordHandler} value={this.state.password} type="password" />
-                <br />
-                <button onClick={this.registerUser} type="submit">Submit</button>
-            </form>
+            <Form>
+                <Form.Label>Register</Form.Label>
+                <Form.Group as={Row} controlId="formUsername">
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control onChange={this.usernameHandler} type="text" placeholder="username" />
+                </Form.Group>
+                <Form.Group as={Row} controlId="formPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control onChange={this.passwordHandler} type="password" placeholder="password" />
+                </Form.Group>
+                <Button onClick={this.registerUser} variant="primary" type="submit">
+                    Register
+            </Button>
+            </Form>
         )
     }
 }

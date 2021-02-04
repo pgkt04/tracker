@@ -1,11 +1,12 @@
 // custom theme
 $primary: white;
+$background: #1f222e;
 
 @import "~bootstrap/scss/bootstrap.scss";
 
 .App {
     text-align: center;
-    background-color: #1f222e;
+    background-color: $background;
     min-height: 100vh;
     display: flex;
     flex-direction: column;

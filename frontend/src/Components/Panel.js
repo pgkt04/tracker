@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react'
+import { Button, Form } from 'react-bootstrap'
 import { Route, Link, Redirect, Switch } from 'react-router-dom'
 import { getAxiosInstance } from './Api'
 import ToDoList from './Features/ToDoList'
@@ -22,29 +23,30 @@ export class Panel extends Component {
     this.api.post('auth/logout/')
     localStorage.removeItem('token')
     this.setState({ isLoggedOut: true })
-  }
-
-  componentDidMount() {
-
+    window.location.href = "/"
   }
 
   render() {
-    // return home once we logged out
-    if (this.state.isLoggedOut) {
-      return <Redirect to={{ pathname: '/', state: { update: true } }} />
-    }
-    console.log("hello???? please work")
+
     // display features
     return (
       <Fragment>
-        <Route exact path="/panel">
-          <button><Link to="/panel/tracker">Tracker</Link></button>
-          <button><Link to="/panel/to-do">To-do List</Link></button>
-          <button onClick={this.logoutUser}>Log out</button>
+        <Route exact path="/">
+          <Form>
+            <Form.Group>
+              <Link to="/tracker"><Button block>Tracker</Button></Link>
+            </Form.Group>
+            <Form.Group>
+              <Link to="/to-do"><Button block>To-do List</Button></Link>
+            </Form.Group>
+            <Form.Group>
+              <Button block onClick={this.logoutUser}>Log out</Button>
+            </Form.Group>
+          </Form>
         </Route>
         <Switch>
-          <Route path="/panel/tracker" component={Tracker} />
-          <Route path="/panel/to-do" component={ToDoList} />
+          <Route path="/tracker" component={Tracker} />
+          <Route path="/to-do" component={ToDoList} />
         </Switch>
       </Fragment>
     )

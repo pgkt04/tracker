@@ -33,7 +33,11 @@ export class Login extends Component {
         let token = response.data.token
         if (token) {
           localStorage.setItem('token', token)
-          this.setState({ loggged_in: true })
+          this.setState((state, props) => {
+            console.log('setting logged in!')
+            this.props.onLoginSuccess()
+            return { loggged_in: true }
+          })
         } else {
           alert('Invalid credentials or account not found')
         }
@@ -58,12 +62,8 @@ export class Login extends Component {
   }
 
   render() {
-
     if (this.state.loggged_in) {
-      return <Redirect to={{
-        pathname: '/panel',
-        state: { update: true }
-      }} />
+      return <Redirect to="/" />
     }
 
     return (

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Login from './Auth/Login';
 import Register from './Auth/Register';
 import Panel from './Panel';
@@ -13,26 +13,41 @@ export class Routes extends Component {
         super(props)
 
         this.state = {
-            verified: false
+            verified: false,
+            should_update: false,
         }
+
+        this.updateVerified = this.updateVerified.bind(this)
     }
 
-    async componentDidMount() {
+    async updateVerified() {
         try {
             let result = await isVerifiedAsync()
-            console.log(result)
+            this.setState({ verified: result })
         } catch (e) {
         }
     }
 
+    async componentDidMount() {
+        console.log('component mounted')
+        this.updateVerified()
+    }
+
     render() {
-        let redir = this.state.verified ? <Redirect to="/panel" /> : null
+
+        if (this.state.verified) {
+            return (
+                <Router>
+                    <Navigation />
+                    <Panel />
+                </Router>
+            )
+        }
 
         return (
             <Router>
-                {redir}
+                <Navigation />
                 <Route exact path="/">
-                    <Navigation />
                     <Form>
                         <Form.Group>
                             <Link to="/login"><Button block>Login</Button></Link>
@@ -43,9 +58,10 @@ export class Routes extends Component {
                     </Form>
                 </Route>
                 <Switch>
-                    <Route path="/login" component={Login} />
+                    <Route path="/login">
+                        <Login onLoginSuccess={this.updateVerified} />
+                    </Route>
                     <Route path="/register" component={Register} />
-                    <Route path="/panel" component={Panel} />
                 </Switch>
             </Router>
         )
