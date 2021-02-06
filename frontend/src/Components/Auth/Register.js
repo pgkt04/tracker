@@ -34,6 +34,7 @@ export class Register extends Component {
                 try {
                     if (response.data.detail === 'success') {
                         this.setState({ registered: true })
+                        this.props.onRegisterSuccess()
                     }
                 } catch (e) {
                     // pass
@@ -61,10 +62,7 @@ export class Register extends Component {
     render() {
 
         if (this.state.registered) {
-            return <Redirect to={{
-                pathname: '/login',
-                state: { update: true }
-            }} />
+            return <Redirect to="/" />
         }
 
         return (

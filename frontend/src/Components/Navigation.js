@@ -1,16 +1,22 @@
-import React, { Component } from 'react'
-import { Navbar } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import React, { Component, Fragment } from 'react'
+import { Navbar, Button } from 'react-bootstrap'
+import { Link, Redirect } from 'react-router-dom'
 
 export class Navigation extends Component {
+
     render() {
+
+        let displayUser = this.props.user ?
+            <Fragment>{"Signed in as "}<a>{this.props.user}</a></Fragment>
+            : null
+
         return (
             <Navbar variant="dark" fixed="top">
-                <Link onClick={() => window.location.href = '/'}>Tracker</Link>
+                <a href="#" onClick={() => { window.location.href = "/" }}>Tracker</a>
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end">
                     <Navbar.Text>
-                        Signed in as: <a href="#login">Username</a>
+                        {displayUser}
                     </Navbar.Text>
                 </Navbar.Collapse>
             </Navbar>

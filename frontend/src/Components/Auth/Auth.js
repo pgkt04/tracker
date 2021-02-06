@@ -13,7 +13,7 @@ export function isVerified() {
 /**
  * Gets data for verification if a token has been set in localstorage
  */
-export async function isVerifiedAsync() {
+export async function getUserInfo() {
   let token = localStorage.getItem('token')
   if (token) {
     let api = getAxiosInstance({ headers: { 'Authorization': `token ${token}` } })

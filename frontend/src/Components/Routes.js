@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Login from './Auth/Login';
 import Register from './Auth/Register';
 import Panel from './Panel';
-import { isVerifiedAsync } from './Auth/Auth'
+import { getUserInfo } from './Auth/Auth'
 import { Button, Form } from 'react-bootstrap'
 import Navigation from './Navigation';
 
@@ -22,14 +22,19 @@ export class Routes extends Component {
 
     async updateVerified() {
         try {
-            let result = await isVerifiedAsync()
-            this.setState({ verified: result })
+            let result = await getUserInfo()
+            this.setState({
+                verified: result.detail === 'success',
+                username: result.username,
+            })
         } catch (e) {
+            this.setState({
+                verified: false
+            })
         }
     }
 
     async componentDidMount() {
-        console.log('component mounted')
         this.updateVerified()
     }
 
@@ -38,15 +43,15 @@ export class Routes extends Component {
         if (this.state.verified) {
             return (
                 <Router>
-                    <Navigation />
-                    <Panel />
+                    <Navigation doRefresh={this.updateVerified} user={this.state.username} />
+                    <Panel onLogout={this.updateVerified} />
                 </Router>
             )
         }
 
         return (
             <Router>
-                <Navigation />
+                <Navigation doRefresh={this.updateVerified} />
                 <Route exact path="/">
                     <Form>
                         <Form.Group>
@@ -61,7 +66,9 @@ export class Routes extends Component {
                     <Route path="/login">
                         <Login onLoginSuccess={this.updateVerified} />
                     </Route>
-                    <Route path="/register" component={Register} />
+                    <Route path="/register">
+                        <Register onRegisterSuccess={this.updateVerified} />
+                    </Route>
                 </Switch>
             </Router>
         )

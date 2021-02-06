@@ -1,4 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
+import { Button, Col, Form, Row } from 'react-bootstrap'
+import { Redirect } from 'react-router-dom'
 import { getAxiosInstance } from '../Api'
 
 export class Tracker extends Component {
@@ -11,9 +13,11 @@ export class Tracker extends Component {
       delta_time: 0,
       has_loaded: false,
       token: localStorage.getItem('token'),
+      redirect_back: false,
     }
 
     this.resetTimer = this.resetTimer.bind(this)
+    this.redirectBack = this.redirectBack.bind(this)
     this.api = getAxiosInstance({ headers: { 'Authorization': `token ${this.state.token}` } })
   }
 
@@ -58,7 +62,16 @@ export class Tracker extends Component {
       })
   }
 
+  redirectBack() {
+    this.setState({redirect_back: true})
+  }
+
   render() {
+
+    if (this.state.redirect_back) {
+      return <Redirect to="/"/>
+    }
+
     let msg = this.state.has_loaded ? this.state.delta_time : "loading"
     let delta = Number(this.state.delta_time)
     let hours = Math.floor(delta / 3600);
@@ -72,11 +85,16 @@ export class Tracker extends Component {
     let sDisplay = seconds > 0 ? seconds + (seconds === 1 ? " second" : " seconds") : "";
 
     return (
-      <div>
-        <p>Time elapsed: {msg}</p>
-        <p>{dayDisplay} {hDisplay} {mDisplay} {sDisplay}</p>
-        <button onClick={this.resetTimer}>Reset</button>
-      </div>
+      <Fragment>
+        {/* <p>Time elapsed: {msg}</p> */}
+        <Row>
+          <p>{dayDisplay} {hDisplay} {mDisplay} {sDisplay}</p>
+        </Row>
+        <Row className="track-width">
+          <Col><Button block onClick={this.redirectBack}>Back</Button></Col>
+          <Col><Button block onClick={this.resetTimer}>Reset</Button></Col>
+        </Row>
+      </Fragment>
     )
   }
 }

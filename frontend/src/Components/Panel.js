@@ -22,12 +22,13 @@ export class Panel extends Component {
   logoutUser() {
     this.api.post('auth/logout/')
     localStorage.removeItem('token')
-    this.setState({ isLoggedOut: true })
-    window.location.href = "/"
+    this.setState((state, props) => {
+      this.props.onLogout()
+      return { isLoggedOut: true }
+    })
   }
 
   render() {
-
     // display features
     return (
       <Fragment>

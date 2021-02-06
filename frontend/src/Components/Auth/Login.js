@@ -20,7 +20,7 @@ export class Login extends Component {
   }
 
   loginUser(e) {
-    e.preventDefault()
+    e.preventDefault()  
 
     api.post('auth/login/',
       {
