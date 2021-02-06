@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { Button, Form } from 'react-bootstrap'
-import { Route, Link, Redirect, Switch } from 'react-router-dom'
+import { Route, Link, Switch } from 'react-router-dom'
 import { getAxiosInstance } from './Api'
 import ToDoList from './Features/ToDoList'
 import Tracker from './Features/Tracker'

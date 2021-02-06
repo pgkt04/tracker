@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Button, Col, Form, Row } from 'react-bootstrap'
+import { Button, Col, Row } from 'react-bootstrap'
 import { Redirect } from 'react-router-dom'
 import { getAxiosInstance } from '../Api'
 
@@ -72,7 +72,7 @@ export class Tracker extends Component {
       return <Redirect to="/"/>
     }
 
-    let msg = this.state.has_loaded ? this.state.delta_time : "loading"
+    // let msg = this.state.has_loaded ? this.state.delta_time : "loading"
     let delta = Number(this.state.delta_time)
     let hours = Math.floor(delta / 3600);
     let minutes = Math.floor(delta % 3600 / 60);
