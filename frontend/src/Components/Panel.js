@@ -23,6 +23,7 @@ export class Panel extends Component {
     this.api.post('auth/logout/')
     localStorage.removeItem('token')
     this.setState((state, props) => {
+      // check if we logged out, otherwise set verified state
       this.props.onLogout()
       return { isLoggedOut: true }
     })
