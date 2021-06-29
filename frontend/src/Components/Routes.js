@@ -6,7 +6,7 @@ import Panel from './Panel';
 import { getUserInfo } from './Auth/Auth'
 import { Button, Form, Col } from 'react-bootstrap'
 import Navigation from './Navigation';
-import all_routes, { public_routes, private_routes } from '../routing';
+import { public_routes, private_routes } from '../routing';
 
 export class Routes extends Component {
 
