@@ -4,6 +4,7 @@ import React from 'react'
 
 const panelComp = Rect.lazy(() => import('./Components/Panel'));
 const private_routes = [
+  { path: '/panel', exact: true, name: 'panel', component: panelComp },
 
 ]
 
@@ -16,5 +17,6 @@ const public_routes = [
 ]
 
 const all_routes = [
+  ...private_routes,
   ...public_routes
 ]
