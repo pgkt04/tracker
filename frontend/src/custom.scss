@@ -5,25 +5,25 @@ $background: #1f222e;
 @import "~bootstrap/scss/bootstrap.scss";
 
 .App {
-    text-align: center;
-    background-color: $background;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+  text-align: center;
+  background-color: $background;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
 
 .navbar-brand {
-    font-size: 2rem;
+  font-size: 2rem;
 }
 
 .navbar-text {
-    font-size: 1.5rem;
+  font-size: 1.5rem;
 }
 
 .track-width {
-    width: 300px;
+  width: 300px;
 }
