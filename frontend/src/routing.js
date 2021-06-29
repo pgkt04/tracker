@@ -4,9 +4,9 @@ import React from 'react'
 // https://www.digitalocean.com/community/tutorials/react-react-router-map-to-routes
 
 const panelComp = React.lazy(() => import('./Components/Panel'));
-const trackercomp= React.lazy(() => import('./Components/Features/Tracker'));
+const trackercomp = React.lazy(() => import('./Components/Features/Tracker'));
 
-const private_routes = [
+export const private_routes = [
   { path: '/', exact: true, name: 'panel', component: panelComp },
   { path: '/tracker', exact: true, name: 'tracker', component: trackercomp },
 ]
@@ -14,7 +14,8 @@ const private_routes = [
 const loginComp = React.lazy(() => import('./Components/Auth/Login'));
 const registerComp = React.lazy(() => import('./Components/Auth/Register'));
 
-const public_routes = [
+export const public_routes = [
+  { path: '/', exact: true, name: 'panel', component: panelComp },
   { path: '/login', exact: true, name: 'login', component: loginComp },
   { path: '/register', exact: true, name: 'register', component: registerComp },
 ]
@@ -23,5 +24,6 @@ const all_routes = [
   ...private_routes,
   ...public_routes
 ]
+
 
 export default all_routes;

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Suspense } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Login from './Auth/Login';
 import Register from './Auth/Register';
@@ -6,6 +6,7 @@ import Panel from './Panel';
 import { getUserInfo } from './Auth/Auth'
 import { Button, Form, Col } from 'react-bootstrap'
 import Navigation from './Navigation';
+import all_routes, { public_routes, private_routes } from '../routing';
 
 export class Routes extends Component {
 
@@ -40,6 +41,49 @@ export class Routes extends Component {
 
   render() {
 
+    const routing = public_routes.map((route, index) => {
+      return (route.component) ? (
+        <Route
+          key={index}
+          path={route.path}
+          exact={route.exact}
+          name={route.name}
+          render={(props) => (
+            <route.component {...props} checkToken={this.updateVerified} />
+          )}
+        />
+      ) : (null)
+    })
+
+    if (this.state.verified) {
+      routing = private_routes.map((route, index) => {
+        return (route.component) ? (
+          <Route
+            key={index}
+            path={route.path}
+            exact={route.exact}
+            name={route.name}
+            render={(props) => (
+              <route.component {...props} checkToken={this.updateVerified} />
+            )}
+          />
+        ) : (null)
+      })
+    }
+
+    return (
+      <div className="App">
+        <Router>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Switch>
+              {routing}
+            </Switch>
+          </Suspense>
+        </Router>
+      </div>
+    );
+
+
     if (this.state.verified) {
       return (
         <Router>
@@ -72,6 +116,7 @@ export class Routes extends Component {
         </Switch>
       </Router>
     )
+
   }
 }
 

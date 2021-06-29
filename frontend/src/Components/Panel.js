@@ -24,7 +24,7 @@ export class Panel extends Component {
     localStorage.removeItem('token')
     this.setState((state, props) => {
       // check if we logged out, otherwise set verified state
-      this.props.onLogout()
+      // this.props.onLogout()
       return { isLoggedOut: true }
     })
   }
@@ -46,10 +46,6 @@ export class Panel extends Component {
             </Form.Group>
           </Form>
         </Route>
-        <Switch>
-          <Route path="/tracker" component={Tracker} />
-          <Route path="/to-do" component={ToDoList} />
-        </Switch>
       </Fragment>
     )
   }
