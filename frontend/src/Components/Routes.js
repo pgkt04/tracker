@@ -4,7 +4,7 @@ import Login from './Auth/Login';
 import Register from './Auth/Register';
 import Panel from './Panel';
 import { getUserInfo } from './Auth/Auth'
-import { Button, Form } from 'react-bootstrap'
+import { Button, Form, Col } from 'react-bootstrap'
 import Navigation from './Navigation';
 
 export class Routes extends Component {
@@ -53,12 +53,12 @@ export class Routes extends Component {
       <Router>
         <Navigation doRefresh={this.updateVerified} />
         <Route exact path="/">
-          <Form>
-            <Form.Group>
-              <Link to="/login"><Button block>Login</Button></Link>
+          <Form className="gap-2">
+            <Form.Group as={Col}>
+              <Link to="/login"><Button className="w-100">Login</Button></Link>
             </Form.Group>
-            <Form.Group>
-              <Link to="/register"><Button block>Register</Button></Link>
+            <Form.Group as={Col}>
+              <Link to="/register"><Button className="w-100">Register</Button></Link>
             </Form.Group>
           </Form>
         </Route>

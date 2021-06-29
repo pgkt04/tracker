@@ -5,5 +5,5 @@ const private_routes = [
 ]
 
 const public_routes = [
-  
+
 ]
