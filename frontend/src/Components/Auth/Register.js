@@ -38,6 +38,8 @@ export class Register extends Component {
           if (response.data.detail === 'success') {
             this.setState({ registered: true });
             this.context.updateVerified();
+          } else {
+            alert("account already exists")
           }
         } catch (e) {
           // pass
@@ -45,7 +47,7 @@ export class Register extends Component {
       })
       .catch(error => {
         console.log(error)
-        alert('error has occured, please check the console')
+        window.alert('error has occured, please check the console')
       })
 
   }

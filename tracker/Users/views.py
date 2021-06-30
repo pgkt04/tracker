@@ -55,7 +55,6 @@ class RegisterStaff(APIView):
     def post(self, request, format=None):
         serializer = AccountSerializer(data=request.data)
         if serializer.is_valid():
-
             if len(Account.objects.filter(username=serializer.validated_data['username'])) > 0:
                 return Response({'detail': 'username already exists'}, status=status.HTTP_200_OK)
 

@@ -64,7 +64,6 @@ export class Routes extends Component {
     })
 
     if (this.state.verified) {
-      console.log("verified 1")
       routing = private_routes.map((route, index) => {
         return (route.component) ? (
           <Route
@@ -78,8 +77,6 @@ export class Routes extends Component {
           />
         ) : (null)
       })
-    } else {
-      console.log("no verified 1")
     }
 
     let verified = this.state.verified;

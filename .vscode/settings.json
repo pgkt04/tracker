@@ -1,3 +1,7 @@
 {
-  "python.pythonPath": "venv\\Scripts\\python.exe"
+  "python.pythonPath": "venv\\Scripts\\python.exe",
+  // https://github.com/microsoft/pylance-release/blob/main/TROUBLESHOOTING.md#unresolved-import-warnings
+  "python.analysis.extraPaths": [
+    "./tracker"
+  ]
 }
