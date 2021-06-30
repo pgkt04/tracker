@@ -4,6 +4,7 @@ import { Route, Link, Switch } from 'react-router-dom'
 import { getAxiosInstance } from './Api'
 import ToDoList from './Features/ToDoList'
 import Tracker from './Features/Tracker'
+import { UserContext } from '../UserContext'
 
 export class Panel extends Component {
 
