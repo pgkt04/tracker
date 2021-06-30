@@ -7,7 +7,7 @@ import { getUserInfo } from './Auth/Auth'
 import { Button, Form, Col } from 'react-bootstrap'
 import Navigation from './Navigation';
 import { public_routes, private_routes } from '../routing';
-import { UserContext } from '../UserContext';
+import UserContext from '../UserContext';
 
 export class Routes extends Component {
 

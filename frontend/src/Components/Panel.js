@@ -4,9 +4,11 @@ import { Route, Link, Switch } from 'react-router-dom'
 import { getAxiosInstance } from './Api'
 import ToDoList from './Features/ToDoList'
 import Tracker from './Features/Tracker'
-import { UserContext } from '../UserContext'
+import UserContext  from '../UserContext'
 
 export class Panel extends Component {
+
+  static contextType = UserContext
 
   constructor(props) {
     super(props)
@@ -35,7 +37,14 @@ export class Panel extends Component {
   }
 
   render() {
-    // display features
+
+    // check if logged in, then display features or prompt
+    if (this.context.verified) {
+      return (<p>hi</p>)
+    } else {
+      return (<p>bye</p>)
+    }
+
     return (
       <Fragment>
         <Route exact path="/">
