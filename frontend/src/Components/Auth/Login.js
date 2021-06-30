@@ -2,8 +2,11 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { api } from '../Api'
 import { Form, Button, Row } from 'react-bootstrap'
+import UserContext from '../../UserContext'
 
 export class Login extends Component {
+
+  static contextType = UserContext
 
   constructor(props) {
     super(props)
@@ -35,7 +38,7 @@ export class Login extends Component {
           localStorage.setItem('token', token)
           this.setState((state, props) => {
             console.log('setting logged in!')
-            this.props.onLoginSuccess()
+            this.context.updateVerified();
             return { loggged_in: true }
           })
         } else {

@@ -30,20 +30,20 @@ export class Panel extends Component {
     this.api.post('auth/logout/')
     localStorage.removeItem('token')
     this.setState((state, props) => {
+
       // check if we logged out, otherwise set verified state
-      // this.props.onLogout()
-      return { isLoggedOut: true }
+      //
+      this.context.updateVerified();
+
+      return { isLoggedOut: true };
     })
   }
 
   render() {
 
     // check if logged in, then display features or prompt
-    console.log(this.context)
-    console.log(this.context.verified)
-
+    //
     if (this.context.verified) {
-      console.log("verified 2")
       return (
         <Form>
           <Form.Group>
@@ -64,7 +64,6 @@ export class Panel extends Component {
         </Form>
       )
     } else {
-      console.log("no verified 2")
       // prompt user to log in
       return (
         <Form className="gap-2">
