@@ -7,6 +7,7 @@ import { getUserInfo } from './Auth/Auth'
 import { Button, Form, Col } from 'react-bootstrap'
 import Navigation from './Navigation';
 import { public_routes, private_routes } from '../routing';
+import { UserContext } from '../UserContext';
 
 export class Routes extends Component {
 
@@ -18,7 +19,12 @@ export class Routes extends Component {
       username: '',
     }
 
-    this.updateVerified = this.updateVerified.bind(this)
+    this.updateVerified = this.updateVerified.bind(this);
+    this.setVerifier = this.setVerifier.bind(this);
+  }
+
+  setVerifier() {
+
   }
 
   async updateVerified() {
@@ -49,7 +55,7 @@ export class Routes extends Component {
           exact={route.exact}
           name={route.name}
           render={(props) => (
-            <route.component {...props} checkToken={this.updateVerified} />
+            <route.component {...props} />
           )}
         />
       ) : (null)
@@ -64,7 +70,7 @@ export class Routes extends Component {
             exact={route.exact}
             name={route.name}
             render={(props) => (
-              <route.component {...props} checkToken={this.updateVerified} />
+              <route.component {...props} />
             )}
           />
         ) : (null)
@@ -76,7 +82,9 @@ export class Routes extends Component {
         <Router>
           <Suspense fallback={<div>Loading...</div>}>
             <Switch>
-              {routing}
+              <UserContext.Provider>
+                {routing}
+              </UserContext.Provider>
             </Switch>
           </Suspense>
         </Router>
