@@ -1,4 +1,4 @@
-import React, { Component, Suspense } from 'react'
+import React, { Component, Suspense, Fragment } from 'react'
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Login from './Auth/Login';
 import Register from './Auth/Register';
@@ -49,7 +49,7 @@ export class Routes extends Component {
 
   render() {
 
-    const routing = public_routes.map((route, index) => {
+    let routing = public_routes.map((route, index) => {
       return (route.component) ? (
         <Route
           key={index}
@@ -64,6 +64,7 @@ export class Routes extends Component {
     })
 
     if (this.state.verified) {
+      console.log("verified 1")
       routing = private_routes.map((route, index) => {
         return (route.component) ? (
           <Route
@@ -77,7 +78,13 @@ export class Routes extends Component {
           />
         ) : (null)
       })
+    } else {
+      console.log("no verified 1")
     }
+
+    let verified = this.state.verified;
+    let updateVerified = this.updateVerified;
+    let setVerified = this.setVerified;
 
     return (
       <div className="App">
@@ -85,11 +92,11 @@ export class Routes extends Component {
           <Suspense fallback={<div>Loading...</div>}>
             <Switch>
               <UserContext.Provider value=
-                {
-                  this.state.verified,
-                  this.updateVerified,
-                  this.setVerified
-                }>
+                {{
+                  verified,
+                  updateVerified,
+                  setVerified
+                }}>
                 {routing}
               </UserContext.Provider>
             </Switch>
@@ -99,38 +106,38 @@ export class Routes extends Component {
     );
 
 
-    if (this.state.verified) {
-      return (
-        <Router>
-          <Navigation doRefresh={this.updateVerified} user={this.state.username} />
-          <Panel onLogout={this.updateVerified} />
-        </Router>
-      )
-    }
+    // if (this.state.verified) {
+    //   return (
+    //     <Router>
+    //       <Navigation doRefresh={this.updateVerified} user={this.state.username} />
+    //       <Panel onLogout={this.updateVerified} />
+    //     </Router>
+    //   )
+    // }
 
-    return (
-      <Router>
-        <Navigation doRefresh={this.updateVerified} />
-        <Route exact path="/">
-          <Form className="gap-2">
-            <Form.Group as={Col}>
-              <Link to="/login"><Button className="w-100">Login</Button></Link>
-            </Form.Group>
-            <Form.Group as={Col}>
-              <Link to="/register"><Button className="w-100">Register</Button></Link>
-            </Form.Group>
-          </Form>
-        </Route>
-        <Switch>
-          <Route path="/login">
-            <Login onLoginSuccess={this.updateVerified} />
-          </Route>
-          <Route path="/register">
-            <Register onRegisterSuccess={this.updateVerified} />
-          </Route>
-        </Switch>
-      </Router>
-    )
+    // return (
+    //   <Router>
+    //     <Navigation doRefresh={this.updateVerified} />
+    //     <Route exact path="/">
+    //       <Form className="gap-2">
+    //         <Form.Group as={Col}>
+    //           <Link to="/login"><Button className="w-100">Login</Button></Link>
+    //         </Form.Group>
+    //         <Form.Group as={Col}>
+    //           <Link to="/register"><Button className="w-100">Register</Button></Link>
+    //         </Form.Group>
+    //       </Form>
+    //     </Route>
+    //     <Switch>
+    //       <Route path="/login">
+    //         <Login onLoginSuccess={this.updateVerified} />
+    //       </Route>
+    //       <Route path="/register">
+    //         <Register onRegisterSuccess={this.updateVerified} />
+    //       </Route>
+    //     </Switch>
+    //   </Router>
+    // )
 
   }
 }

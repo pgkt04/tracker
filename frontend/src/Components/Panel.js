@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react'
-import { Button, Form } from 'react-bootstrap'
+import { Button, Form, Col } from 'react-bootstrap'
 import { Route, Link, Switch } from 'react-router-dom'
 import { getAxiosInstance } from './Api'
 import ToDoList from './Features/ToDoList'
 import Tracker from './Features/Tracker'
-import UserContext  from '../UserContext'
+import UserContext from '../UserContext'
 
 export class Panel extends Component {
 
@@ -39,35 +39,46 @@ export class Panel extends Component {
   render() {
 
     // check if logged in, then display features or prompt
+    console.log(this.context)
+    console.log(this.context.verified)
+
     if (this.context.verified) {
-      return (<p>hi</p>)
+      console.log("verified 2")
+      return (
+        <Form>
+          <Form.Group>
+            <Link to="/tracker">
+              <Button className="w-100">Tracker</Button>
+            </Link>
+          </Form.Group>
+          <Form.Group>
+            <Link to="/to-do">
+              <Button className="w-100">To-do List</Button>
+            </Link>
+          </Form.Group>
+          <Form.Group>
+            <Button className="w-100" onClick={this.logoutUser}>
+              Log out
+            </Button>
+          </Form.Group>
+        </Form>
+      )
     } else {
-      return (<p>bye</p>)
+      console.log("no verified 2")
+      // prompt user to log in
+      return (
+        <Form className="gap-2">
+          <Form.Group as={Col}>
+            <Link to="/login"><Button className="w-100">Login</Button></Link>
+          </Form.Group>
+          <Form.Group as={Col}>
+            <Link to="/register"><Button className="w-100">Register</Button></Link>
+          </Form.Group>
+        </Form>
+      )
     }
 
-    return (
-      <Fragment>
-        <Route exact path="/">
-          <Form>
-            <Form.Group>
-              <Link to="/tracker">
-                <Button className="w-100">Tracker</Button>
-              </Link>
-            </Form.Group>
-            <Form.Group>
-              <Link to="/to-do">
-                <Button className="w-100">To-do List</Button>
-              </Link>
-            </Form.Group>
-            <Form.Group>
-              <Button className="w-100" onClick={this.logoutUser}>
-                Log out
-              </Button>
-            </Form.Group>
-          </Form>
-        </Route>
-      </Fragment>
-    )
+
   }
 }
 
