@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react'
-import { Button, Col, Row } from 'react-bootstrap'
+import { Button, Col, Row, Form } from 'react-bootstrap'
 import { Redirect } from 'react-router-dom'
 import { getAxiosInstance } from '../Api'
 
@@ -63,22 +63,22 @@ export class Tracker extends Component {
   }
 
   redirectBack() {
-    this.setState({redirect_back: true})
+    this.setState({ redirect_back: true })
   }
 
   render() {
 
     if (this.state.redirect_back) {
-      return <Redirect to="/"/>
+      return <Redirect to="/" />
     }
 
     // let msg = this.state.has_loaded ? this.state.delta_time : "loading"
-    let delta = Number(this.state.delta_time)
+    let delta = Number(this.state.delta_time);
     let hours = Math.floor(delta / 3600);
     let minutes = Math.floor(delta % 3600 / 60);
     let seconds = Math.floor(delta % 3600 % 60);
-    let days = Math.floor(hours / 24)
-    let remainingHrs = hours - (days * 24)
+    let days = Math.floor(hours / 24);
+    let remainingHrs = hours - (days * 24);
     let dayDisplay = days > 0 ? days + (days === 1 ? " day, " : " days, ") : "";
     let hDisplay = remainingHrs > 0 ? remainingHrs + (remainingHrs === 1 ? " hour, " : " hours, ") : "";
     let mDisplay = minutes > 0 ? minutes + (minutes === 1 ? " minute, " : " minutes, ") : "";
@@ -87,14 +87,28 @@ export class Tracker extends Component {
     return (
       <Fragment>
         {/* <p>Time elapsed: {msg}</p> */}
-        <Row>
+        <Row className="g-2">
           <p>{dayDisplay} {hDisplay} {mDisplay} {sDisplay}</p>
         </Row>
-        <Row className="track-width">
+
+        <Row className="track-width mb-5">
           <Col><Button block onClick={this.redirectBack}>Back</Button></Col>
           <Col><Button block onClick={this.resetTimer}>Reset</Button></Col>
         </Row>
-      </Fragment>
+
+        <Form>
+          <Form.Label>New Tracker</Form.Label>
+          <Row className="mb-3">
+            <Form.Group as={Col} className="col-sm-8">
+              <Form.Control className="w-100" type="text" placeholder="topic" />
+            </Form.Group>
+            <Form.Group as={Col}>
+              <Button style={{ float: "left" }} type="submit">Create</Button>
+            </Form.Group>
+          </Row>
+        </Form>
+
+      </Fragment >
     )
   }
 }

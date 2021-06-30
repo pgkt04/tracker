@@ -48,7 +48,8 @@ class AddRecord(APIView):
 
         existing = Record.objects.filter(uid=user.id, is_active=True)
         if len(existing) > 0:
-            return Response({"status": "existing record already exists"}, status.HTTP_400_BAD_REQUEST)
+            return Response({"status": "existing record already exists"},
+                            status.HTTP_400_BAD_REQUEST)
 
         temp = {"created": int(time.time()), "ended": 0,
                 "uid": user.id, "is_active": True}
