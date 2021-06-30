@@ -20,11 +20,13 @@ export class Routes extends Component {
     }
 
     this.updateVerified = this.updateVerified.bind(this);
-    this.setVerifier = this.setVerifier.bind(this);
+    this.setVerified = this.setVerified.bind(this);
   }
 
-  setVerifier() {
-
+  setVerified(status) {
+    this.setState({
+      verified: status
+    });
   }
 
   async updateVerified() {
@@ -33,11 +35,11 @@ export class Routes extends Component {
       this.setState({
         verified: result.detail === 'success',
         username: result.username,
-      })
+      });
     } catch (e) {
       this.setState({
         verified: false
-      })
+      });
     }
   }
 
@@ -82,7 +84,12 @@ export class Routes extends Component {
         <Router>
           <Suspense fallback={<div>Loading...</div>}>
             <Switch>
-              <UserContext.Provider>
+              <UserContext.Provider value=
+                {
+                  this.state.verified,
+                  this.updateVerified,
+                  this.setVerified
+                }>
                 {routing}
               </UserContext.Provider>
             </Switch>

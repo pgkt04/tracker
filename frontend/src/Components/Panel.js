@@ -36,13 +36,13 @@ export class Panel extends Component {
         <Route exact path="/">
           <Form>
             <Form.Group>
-              <Link to="/tracker"><Button block>Tracker</Button></Link>
+              <Link to="/tracker"><Button className="w-100">Tracker</Button></Link>
             </Form.Group>
             <Form.Group>
-              <Link to="/to-do"><Button block>To-do List</Button></Link>
+              <Link to="/to-do"><Button className="w-100">To-do List</Button></Link>
             </Form.Group>
             <Form.Group>
-              <Button block onClick={this.logoutUser}>Log out</Button>
+              <Button className="w-100" onClick={this.logoutUser}>Log out</Button>
             </Form.Group>
           </Form>
         </Route>
