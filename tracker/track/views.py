@@ -47,12 +47,17 @@ class AddRecord(APIView):
         user = request.user
 
         existing = Record.objects.filter(uid=user.id, is_active=True)
+
         if len(existing) > 0:
             return Response({"status": "existing record already exists"},
                             status.HTTP_400_BAD_REQUEST)
+        temp = {
+            "created": int(time.time()),
+            "ended": 0,
+            "uid": user.id,
+            "is_active": True
+        }
 
-        temp = {"created": int(time.time()), "ended": 0,
-                "uid": user.id, "is_active": True}
         serializer = RecordSerializer(data=temp)
         if serializer.is_valid():
             serializer.save()
@@ -77,8 +82,13 @@ class ResetRecord(APIView):
             record.save(update_fields=['is_active'])
 
         # assign a new record and save it
-        temp = {"created": int(time.time()), "ended": 0,
-                "uid": user.id, "is_active": True}
+        temp = {
+            "created": int(time.time()),
+            "ended": 0,
+            "uid": user.id,
+            "is_active": True
+        }
+
         serializer = RecordSerializer(data=temp)
         if serializer.is_valid():
             serializer.save()

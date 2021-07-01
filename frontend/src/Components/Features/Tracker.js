@@ -10,7 +10,7 @@ export class Tracker extends Component {
 
     this.state = {
       record_data: {},
-      delta_time: 0,
+      delta_time: [],
       has_loaded: false,
       token: localStorage.getItem('token'),
       redirect_back: false,
