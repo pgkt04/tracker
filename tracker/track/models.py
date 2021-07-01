@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Record(models.Model):
 
     # epoch created
@@ -15,4 +16,4 @@ class Record(models.Model):
     is_active = models.BooleanField(default=True)
 
     # name of what you are tracking, it should never be blank
-    topic = models.CharField(max_length=100, default="blank")
+    topic = models.CharField(max_length=100, default="blank" )

@@ -2,6 +2,11 @@
   "python.pythonPath": "venv\\Scripts\\python.exe",
   // https://github.com/microsoft/pylance-release/blob/main/TROUBLESHOOTING.md#unresolved-import-warnings
   "python.analysis.extraPaths": [
+    "./",
     "./tracker"
-  ]
+  ],
+  "python.linting.pylintEnabled": false,
+  "python.linting.enabled": true,
+  "python.linting.pycodestyleEnabled": false,
+  "python.linting.flake8Enabled": true
 }
