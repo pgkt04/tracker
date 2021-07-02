@@ -1,10 +1,10 @@
+import time
 from django.shortcuts import render
 from rest_framework import viewsets, status, generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from track.models import Record
 from track.serializer import RecordSerializer
-import time
 
 
 class GetAllRecords(generics.ListAPIView):
