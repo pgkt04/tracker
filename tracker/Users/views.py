@@ -93,7 +93,7 @@ class LoginUser(APIView):
 
 class VerifyToken(APIView):
     """
-    Simple check for tokens to validate them and provides additional 
+    Simple check for tokens to validate them and provides additional
     data about the user
     """
 
