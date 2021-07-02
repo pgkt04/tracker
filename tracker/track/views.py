@@ -26,9 +26,7 @@ class GetActiveRecords(APIView):
 
         # return an existing record
         if len(existing) > 0:
-
             all_records = RecordSerializer(existing, many=True)
-
             return Response(all_records.data, status=status.HTTP_200_OK)
 
             # deprecated
@@ -68,6 +66,7 @@ class AddRecord(APIView):
                             status.HTTP_400_BAD_REQUEST)
 
         serializer = RecordSerializer(data=request.data)
+
         if serializer.is_valid():
             print("serializer data: ", serializer.validated_data)
 
@@ -78,6 +77,7 @@ class AddRecord(APIView):
                 "is_active": True,
                 "topic": serializer.validated_data['topic']
             }
+
             serializer = RecordSerializer(data=temp)
 
             if serializer.is_valid():
@@ -92,18 +92,19 @@ class AddRecord(APIView):
 
 class ResetRecord(APIView):
     """
+    TODO:
     Disables the selected record, copies it and resets the time.
 
+    Depreciated:
     Disables the latest record and assigns a new one
 
     TODO: set the ended time
     """
 
     def get(self, request, format=None):
-
         user = request.user
-
         existing = Record.objects.filter(uid=user.id, is_active=True)
+
         for record in existing:
             record.is_active = False
             record.save(update_fields=['is_active'])
