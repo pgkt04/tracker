@@ -76,6 +76,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'tracker.wsgi.application'
 
 # Production setting
+#
 # REST_FRAMEWORK = {
 #     'DEFAULT_RENDERER_CLASSES': (
 #         'rest_framework.renderers.JSONRenderer',

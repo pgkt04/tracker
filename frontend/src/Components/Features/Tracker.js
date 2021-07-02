@@ -26,6 +26,7 @@ export class Tracker extends Component {
     // fetch the user latest starting time
 
     this.api.get("latest-record/")
+
       .then(res => {
         this.setState({
           record_data: res.data,

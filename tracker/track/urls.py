@@ -6,9 +6,18 @@ from rest_framework.routers import DefaultRouter
 from track import views
 
 urlpatterns = [
-    path('get-records/', views.GetAllRecords.as_view()),
+    # should be disabled, but enabled for debugging
+    path('all-records/', views.GetAllRecords.as_view()),
+
+    # inserts a new record with a topic
     path('add-record/', views.AddRecord.as_view()),
+
+    # disable a record
     path('disable-records/', views.DisableAllRecords.as_view()),
-    path('latest-record/', views.GetActiveRecord.as_view()),
+
+    # gets the record for the current user
+    path('get-records/', views.GetActiveRecord.as_view()),
+
+    # reset a record to 0
     path('reset-record/', views.ResetRecord.as_view())
 ]
