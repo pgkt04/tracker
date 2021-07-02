@@ -23,9 +23,9 @@ export class Tracker extends Component {
 
   componentDidMount() {
     let current_time = Math.round(Date.now() / 1000)
-    // fetch the user latest starting time
 
-    this.api.get("latest-record/")
+    // fetch the user latest starting time
+    this.api.get("get-records/")
 
       .then(res => {
         this.setState({

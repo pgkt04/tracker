@@ -16,7 +16,7 @@ urlpatterns = [
     path('disable-records/', views.DisableAllRecords.as_view()),
 
     # gets the record for the current user
-    path('get-records/', views.GetActiveRecord.as_view()),
+    path('get-records/', views.GetActiveRecords.as_view()),
 
     # reset a record to 0
     path('reset-record/', views.ResetRecord.as_view())

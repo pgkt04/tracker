@@ -15,19 +15,27 @@ class GetAllRecords(generics.ListAPIView):
     serializer_class = RecordSerializer
 
 
-class GetActiveRecord(APIView):
+class GetActiveRecords(APIView):
     """
-    Gets the current active record from the current login
+    Returns an array of active records for this user
     """
+
     def get(self, request, format=None):
         user = request.user
         existing = Record.objects.filter(uid=user.id, is_active=True)
 
         # return an existing record
         if len(existing) > 0:
+
+            all_records = RecordSerializer(existing, many=True)
+
+            return Response(all_records.data, status=status.HTTP_200_OK)
+
+            # deprecated
             # an existing one exists, lets return that instead
-            latest = RecordSerializer(existing[0])
-            return Response(latest.data, status=status.HTTP_200_OK)
+            #
+            # latest = RecordSerializer(existing[0])
+            # return Response(latest.data, status=status.HTTP_200_OK)
 
         # no data was found
         return Response({"status": "No record exists"},
@@ -35,7 +43,7 @@ class GetActiveRecord(APIView):
 
         # we need to create a new record and return that instead
         # old deprecated code
-        #         
+        #
         # temp = {"created": int(time.time()), "ended": 0,
         #         "uid": user.id, "is_active": True}
         # serializer = RecordSerializer(data=temp)
