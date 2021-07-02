@@ -52,35 +52,46 @@ class AddRecord(APIView):
 
     def post(self, request, format=None):
         user = request.user
-
         existing = Record.objects.filter(uid=user.id, is_active=True)
 
         if len(existing) > 0:
             return Response({"status": "existing record already exists"},
                             status.HTTP_400_BAD_REQUEST)
-        temp = {
-            "created": int(time.time()),
-            "ended": 0,
-            "uid": user.id,
-            "is_active": True
-        }
 
-        serializer = RecordSerializer(data=temp)
+        serializer = RecordSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            print("serializer data: ", serializer.validated_data)
+
+            temp = {
+                "created": int(time.time()),
+                "ended": 0,
+                "uid": user.id,
+                "is_active": True,
+                "topic": serializer.validated_data['topic']
+            }
+            serializer = RecordSerializer(data=temp)
+
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data,
+                                status=status.HTTP_201_CREATED)
+        else:
+            print("invalid serializer")
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ResetRecord(APIView):
     """
+    Disables the selected record, copies it and resets the time.
+
     Disables the latest record and assigns a new one
 
-    to-do:
-    set the ended time
+    TODO: set the ended time
     """
 
     def get(self, request, format=None):
+
         user = request.user
 
         existing = Record.objects.filter(uid=user.id, is_active=True)
@@ -93,7 +104,7 @@ class ResetRecord(APIView):
             "created": int(time.time()),
             "ended": 0,
             "uid": user.id,
-            "is_active": True
+            "is_active": True,
         }
 
         serializer = RecordSerializer(data=temp)

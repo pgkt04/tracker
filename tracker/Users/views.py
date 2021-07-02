@@ -9,7 +9,6 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from .models import Login, Account
 from .serializer import AccountSerializer, LoginSerializer
 
-
 from rest_framework.request import Request
 
 
@@ -32,8 +31,10 @@ class RegisterUser(APIView):
         serializer = AccountSerializer(data=request.data)
         if serializer.is_valid():
 
-            if len(Account.objects.filter(username=serializer.validated_data['username'])) > 0:
-                return Response({'detail': 'username already exists'}, status=status.HTTP_200_OK)
+            if len(Account.objects.filter(
+                    username=serializer.validated_data['username'])) > 0:
+                return Response({'detail': 'username already exists'},
+                                status=status.HTTP_200_OK)
 
             Account.objects.create_user(
                 '',
@@ -55,11 +56,14 @@ class RegisterStaff(APIView):
     def post(self, request, format=None):
         serializer = AccountSerializer(data=request.data)
         if serializer.is_valid():
-            if len(Account.objects.filter(username=serializer.validated_data['username'])) > 0:
-                return Response({'detail': 'username already exists'}, status=status.HTTP_200_OK)
+            if len(Account.objects.filter(
+                    username=serializer.validated_data['username'])) > 0:
+                return Response({'detail': 'username already exists'},
+                                status=status.HTTP_200_OK)
 
             Account.objects.create_staff(
-                serializer.validated_data['username'], serializer.validated_data['password'])
+                serializer.validated_data['username'],
+                serializer.validated_data['password'])
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors)
 

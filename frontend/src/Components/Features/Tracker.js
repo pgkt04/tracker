@@ -96,7 +96,6 @@ export class Tracker extends Component {
           <Col><Button block onClick={this.resetTimer}>Reset</Button></Col>
         </Row>
 
-
         <Form>
           <Form.Label>New Tracker</Form.Label>
           <Row className="mb-3">
