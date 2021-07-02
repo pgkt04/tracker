@@ -42,10 +42,9 @@ class RegisterUser(APIView):
             )
 
             return Response({'detail': 'success'})
+            #  return Response(serializer.data, status=status.HTTP_200_OK)
 
-            # return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors)
-
 
 class RegisterStaff(APIView):
     """

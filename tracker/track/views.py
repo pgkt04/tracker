@@ -19,7 +19,6 @@ class GetActiveRecord(APIView):
     """
     Gets the current active record from the current login
     """
-
     def get(self, request, format=None):
         user = request.user
         existing = Record.objects.filter(uid=user.id, is_active=True)
@@ -35,6 +34,8 @@ class GetActiveRecord(APIView):
                         status=status.HTTP_400_BAD_REQUEST)
 
         # we need to create a new record and return that instead
+        # old deprecated code
+        #         
         # temp = {"created": int(time.time()), "ended": 0,
         #         "uid": user.id, "is_active": True}
         # serializer = RecordSerializer(data=temp)
