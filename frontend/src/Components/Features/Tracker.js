@@ -11,6 +11,7 @@ export class Tracker extends Component {
     this.state = {
       record_data: {},
       delta_time: [],
+      topics: [],
       has_loaded: false,
       token: localStorage.getItem('token'),
       redirect_back: false,
@@ -55,7 +56,7 @@ export class Tracker extends Component {
       );
 
     this.updateTimer = setInterval(() => {
-      current_time = Math.round(Date.now() / 1000)
+      current_time = Math.round(Date.now() / 1000);
       this.setState(
         {
           delta_time: this.calcDeltaTime(this.state.record_data),
@@ -64,7 +65,7 @@ export class Tracker extends Component {
           has_loaded: true
         });
 
-        console.log(this.state.delta_time);
+      console.log(this.state.delta_time);
     }, 1000);
 
   }
@@ -88,28 +89,32 @@ export class Tracker extends Component {
   }
 
   render() {
-
+    // handler to go back to the previous page
+    //
     if (this.state.redirect_back) {
       return <Redirect to="/" />
     }
 
     // let msg = this.state.has_loaded ? this.state.delta_time : "loading"
-    let delta = Number(this.state.delta_time);
-    let hours = Math.floor(delta / 3600);
-    let minutes = Math.floor(delta % 3600 / 60);
-    let seconds = Math.floor(delta % 3600 % 60);
-    let days = Math.floor(hours / 24);
-    let remainingHrs = hours - (days * 24);
-    let dayDisplay = days > 0 ? days + (days === 1 ? " day " : " days ") : "";
-    let hDisplay = remainingHrs > 0 ? remainingHrs + (remainingHrs === 1 ? " hour " : " hours ") : "";
-    let mDisplay = minutes > 0 ? minutes + (minutes === 1 ? " minute " : " minutes ") : "";
-    let sDisplay = seconds > 0 ? seconds + (seconds === 1 ? " second" : " seconds") : "";
+    let display_all = this.state.delta_time.map((dt, key) => {
+      let delta = Number(dt);
+      let hours = Math.floor(delta / 3600);
+      let minutes = Math.floor(delta % 3600 / 60);
+      let seconds = Math.floor(delta % 3600 % 60);
+      let days = Math.floor(hours / 24);
+      let remainingHrs = hours - (days * 24);
+      let dayDisplay = days > 0 ? days + (days === 1 ? " day " : " days ") : "";
+      let hDisplay = remainingHrs > 0 ? remainingHrs + (remainingHrs === 1 ? " hour " : " hours ") : "";
+      let mDisplay = minutes > 0 ? minutes + (minutes === 1 ? " minute " : " minutes ") : "";
+      let sDisplay = seconds > 1 ? seconds + (seconds === 1 ? " second" : " seconds") : "";
+      let topic = this.state.record_data[key].topic;
+      return dt ? (<p>{dayDisplay} {hDisplay} {mDisplay} {sDisplay} {topic}</p>) : (null);
+    });
 
     return (
       <Fragment>
-        {/* <p>Time elapsed: {msg}</p> */}
         <Row className="g-2">
-          <p>{dayDisplay} {hDisplay} {mDisplay} </p>
+          {display_all}
         </Row>
 
         <Row className="track-width mb-4">
