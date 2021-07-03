@@ -59,17 +59,10 @@ class AddRecord(APIView):
         # it doesn't matter if the user already has a record
         # we just need to create a new record given the new topic
 
-        existing = Record.objects.filter(uid=user.id, is_active=True)
-
-        if len(existing) > 0:
-            return Response({"status": "existing record already exists"},
-                            status.HTTP_400_BAD_REQUEST)
-
         serializer = RecordSerializer(data=request.data)
 
         if serializer.is_valid():
             print("serializer data: ", serializer.validated_data)
-
             temp = {
                 "created": int(time.time()),
                 "ended": 0,
@@ -79,11 +72,9 @@ class AddRecord(APIView):
             }
 
             serializer = RecordSerializer(data=temp)
-
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data,
-                                status=status.HTTP_201_CREATED)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             print("invalid serializer")
 

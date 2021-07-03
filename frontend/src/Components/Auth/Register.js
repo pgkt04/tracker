@@ -30,7 +30,6 @@ export class Register extends Component {
         'username': this.state.username,
         'password': this.state.password,
       })
-
       .then(response => {
         // read the token from the response and set it
         console.log(response)
