@@ -23,6 +23,14 @@ export class Tracker extends Component {
     );
   }
 
+  // calculates a list of delta time
+  //
+  calcDeltaTime(data) {
+    let ret = [];
+
+    return ret;
+  }
+
   componentDidMount() {
     let current_time = Math.round(Date.now() / 1000)
 
@@ -30,9 +38,9 @@ export class Tracker extends Component {
     this.api.get("get-records/")
 
       .then(res => {
+        // calculate delta time
         this.setState({
           record_data: res.data,
-          delta_time: current_time - res.data.created,
           has_loaded: true
         })
       })
