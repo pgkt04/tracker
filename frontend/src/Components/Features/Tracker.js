@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { Button, Col, Row, Form } from 'react-bootstrap'
+import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
 import { Redirect } from 'react-router-dom'
 import { auth_api as api } from '../Api'
 
@@ -21,6 +22,8 @@ export class Tracker extends Component {
     this.redirectBack = this.redirectBack.bind(this);
     this.topicHandler = this.topicHandler.bind(this);
     this.addTopic = this.addTopic.bind(this);
+    this.deleteHandler = this.deleteHandler.bind(this);
+    this.updateRecords = this.updateRecords(this);
   }
 
   // calculates a list of delta time
@@ -32,42 +35,6 @@ export class Tracker extends Component {
       ret.push(current_time - data[i].created);
     }
     return ret;
-  }
-
-  componentDidMount() {
-    let current_time = Math.round(Date.now() / 1000)
-
-    // fetch the user latest starting time
-    // and calculate their delta time
-    //
-    api.get("get-records/")
-      .then(res => {
-        this.setState({
-          record_data: res.data,
-          delta_time: this.calcDeltaTime(res),
-          has_loaded: true
-        })
-      })
-      .catch(
-        error => {
-          console.log("something went wrong" + error)
-        }
-      );
-
-    this.updateTimer = setInterval(() => {
-      current_time = Math.round(Date.now() / 1000);
-      this.setState(
-        {
-          delta_time: this.calcDeltaTime(this.state.record_data),
-          has_loaded: true
-        });
-
-    }, 1000);
-
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.updateTimer);
   }
 
   resetTimer() {
@@ -90,17 +57,44 @@ export class Tracker extends Component {
     })
   }
 
+  updateRecords() {
+    // fetch the user latest starting time
+    // and calculate their delta time
+    //
+    api.get("get-records/")
+      .then(res => {
+        this.setState({
+          record_data: res.data,
+          delta_time: this.calcDeltaTime(res),
+          has_loaded: true
+        })
+      })
+      .catch(
+        error => {
+          console.log("something went wrong" + error)
+        }
+      );
+  }
+
+  // id is the id of the record we want to delete
+  //
+  deleteHandler(e, id) {
+    e.preventDefault();
+
+    api.post('delete-record/', { 'id': id })
+      .then(response => { })
+      .catch(error => { });
+
+    this.updateRecords();
+  }
+
   addTopic(e) {
     e.preventDefault();
     api.post('add-record/', { 'topic': this.state.topic })
       .then(response => {
-        // read the token from the response and set it
-        console.log(response)
         try {
-          // update state
           let api_data = this.state.record_data;
           api_data.push(response.data);
-
           this.setState({
             record_data: api_data,
             delta_time: this.calcDeltaTime(api_data)
@@ -112,6 +106,27 @@ export class Tracker extends Component {
       });
   }
 
+  componentDidMount() {
+    let current_time = Math.round(Date.now() / 1000)
+
+    this.updateRecords();
+
+    // update the timer every second
+    //
+    this.updateTimer = setInterval(() => {
+      current_time = Math.round(Date.now() / 1000);
+      this.setState({
+        delta_time: this.calcDeltaTime(this.state.record_data),
+        has_loaded: true
+      });
+
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.updateTimer);
+  }
+
   render() {
     // handler to go back to the previous page
     //
@@ -120,7 +135,7 @@ export class Tracker extends Component {
     }
 
     // TODO: add functionality for resetting stuff
-
+    //
     let display_all = this.state.delta_time.map((dt, key) => {
       let delta = Number(dt);
       let hours = Math.floor(delta / 3600);
@@ -133,10 +148,17 @@ export class Tracker extends Component {
       let mDisplay = minutes > 0 ? minutes + (minutes === 1 ? " minute " : " minutes ") : "";
       let sDisplay = seconds > 1 ? seconds + (seconds === 1 ? " second" : " seconds") : "";
       let topic = this.state.record_data[key].topic;
+      let record_id = this.state.record_data[key].id;
+
       return dt ? (
-        <p key={key}>
-          {dayDisplay} {hDisplay} {mDisplay} {sDisplay} {topic}
-        </p>) : (null);
+        <Fragment key={key}>
+          <Row><Col>
+            {dayDisplay} {hDisplay} {mDisplay} {sDisplay} {topic} { }
+            <Button onClick={(e) => { this.deleteHandler(e, record_id) }}>
+              Delete
+            </Button>
+          </Col></Row>
+        </Fragment>) : (null);
     });
 
     return (
@@ -147,7 +169,7 @@ export class Tracker extends Component {
 
         <Row className="track-width mb-4">
           <Col><Button block onClick={this.redirectBack}>Back</Button></Col>
-          <Col><Button block onClick={this.resetTimer}>Reset</Button></Col>
+          <Col><Button block onClick={this.resetTimer}>Reset all</Button></Col>
         </Row>
 
         <Form>

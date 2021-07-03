@@ -77,6 +77,9 @@ class AddRecord(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class DeleteRecord(APIView):
+  pass
+
 
 class ResetRecords(APIView):
     """
