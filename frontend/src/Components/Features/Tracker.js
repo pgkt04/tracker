@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Button, Col, Row, Form } from 'react-bootstrap'
 import { Redirect } from 'react-router-dom'
-import { getAxiosInstance } from '../Api'
+import { auth_api as api } from '../Api'
 
 export class Tracker extends Component {
 
@@ -9,19 +9,18 @@ export class Tracker extends Component {
     super(props);
 
     this.state = {
+      topic: '',
       record_data: {},
       delta_time: [],
       topics: [],
       has_loaded: false,
-      token: localStorage.getItem('token'),
       redirect_back: false,
     };
 
     this.resetTimer = this.resetTimer.bind(this);
     this.redirectBack = this.redirectBack.bind(this);
-    this.api = getAxiosInstance(
-      { headers: { 'Authorization': `token ${this.state.token}` } }
-    );
+    this.topicHandler = this.topicHandler.bind(this);
+    this.addTopic = this.addTopic.bind(this);
   }
 
   // calculates a list of delta time
@@ -41,7 +40,7 @@ export class Tracker extends Component {
     // fetch the user latest starting time
     // and calculate their delta time
     //
-    this.api.get("get-records/")
+    api.get("get-records/")
       .then(res => {
         this.setState({
           record_data: res.data,
@@ -60,12 +59,9 @@ export class Tracker extends Component {
       this.setState(
         {
           delta_time: this.calcDeltaTime(this.state.record_data),
-          // deprecated:
-          // current_time - this.state.record_data.created,
           has_loaded: true
         });
 
-      console.log(this.state.delta_time);
     }, 1000);
 
   }
@@ -75,7 +71,7 @@ export class Tracker extends Component {
   }
 
   resetTimer() {
-    this.api.get("reset-record/")
+    api.get("reset-records/")
       .then(res => {
         this.setState({ record_data: res.data })
       })
@@ -88,6 +84,37 @@ export class Tracker extends Component {
     this.setState({ redirect_back: true })
   }
 
+  topicHandler(e) {
+    this.setState({
+      topic: e.target.value
+    })
+  }
+
+  addTopic(e) {
+    e.preventDefault();
+    api.post('add-record/', { 'topic': this.state.topic })
+      .then(response => {
+        // read the token from the response and set it
+        console.log(response)
+        try {
+          // update state
+          let api_data = this.state.record_data;
+          api_data.push(response.data);
+
+          this.setState({
+            record_data: api_data,
+            delta_time: this.calcDeltaTime(api_data)
+          });
+          // alert('added!');
+          // console.log(api_data);
+          // this.forceUpdate();
+        } catch (e) { }
+      })
+      .catch(error => {
+        console.log(error.response);
+      });
+  }
+
   render() {
     // handler to go back to the previous page
     //
@@ -95,7 +122,6 @@ export class Tracker extends Component {
       return <Redirect to="/" />
     }
 
-    // let msg = this.state.has_loaded ? this.state.delta_time : "loading"
     let display_all = this.state.delta_time.map((dt, key) => {
       let delta = Number(dt);
       let hours = Math.floor(delta / 3600);
@@ -108,7 +134,7 @@ export class Tracker extends Component {
       let mDisplay = minutes > 0 ? minutes + (minutes === 1 ? " minute " : " minutes ") : "";
       let sDisplay = seconds > 1 ? seconds + (seconds === 1 ? " second" : " seconds") : "";
       let topic = this.state.record_data[key].topic;
-      return dt ? (<p>{dayDisplay} {hDisplay} {mDisplay} {sDisplay} {topic}</p>) : (null);
+      return dt ? (<p key={key}> {dayDisplay} {hDisplay} {mDisplay} {sDisplay} {topic}</p>) : (null);
     });
 
     return (
@@ -126,10 +152,10 @@ export class Tracker extends Component {
           <Form.Label>New Tracker</Form.Label>
           <Row className="mb-3">
             <Form.Group as={Col} xs={8}>
-              <Form.Control className="w-100" type="text" placeholder="topic" />
+              <Form.Control onChange={this.topicHandler} className="w-100" type="text" placeholder="topic" />
             </Form.Group>
             <Form.Group as={Col} xs={4}>
-              <Button style={{ float: "left" }} type="submit">Create</Button>
+              <Button onClick={this.addTopic} style={{ float: "left" }} type="submit">Create</Button>
             </Form.Group>
           </Row>
         </Form>

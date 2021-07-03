@@ -56,6 +56,10 @@ class AddRecord(APIView):
         serializer = RecordSerializer(data=request.data)
 
         if serializer.is_valid():
+            if 'topic' not in serializer.validated_data:
+                return Response({'status': 'incorrect parameters'},
+                                status=status.HTTP_400_BAD_REQUEST)
+
             temp = {
                 "created": int(time.time()),
                 "ended": 0,
