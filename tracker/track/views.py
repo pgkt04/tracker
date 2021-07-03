@@ -29,12 +29,6 @@ class GetActiveRecords(APIView):
             all_records = RecordSerializer(existing, many=True)
             return Response(all_records.data, status=status.HTTP_200_OK)
 
-            # deprecated
-            # an existing one exists, lets return that instead
-            #
-            # latest = RecordSerializer(existing[0])
-            # return Response(latest.data, status=status.HTTP_200_OK)
-
         # no data was found
         return Response({"status": "No record exists"},
                         status=status.HTTP_400_BAD_REQUEST)
@@ -59,6 +53,12 @@ class AddRecord(APIView):
 
     def post(self, request, format=None):
         user = request.user
+
+        # check if the user has a record
+        # TODO: change this
+        # it doesn't matter if the user already has a record
+        # we just need to create a new record given the new topic
+
         existing = Record.objects.filter(uid=user.id, is_active=True)
 
         if len(existing) > 0:
@@ -135,3 +135,21 @@ class DisableAllRecords(APIView):
             record.is_active = False
             record.save(update_fields=["is_active"])
         return Response({"status": "ok"}, status=status.HTTP_200_OK)
+
+
+class DisableAllActiveRecords(APIView):
+    """
+    TODO:
+    Sets all existing records as not active
+    for a specific user
+
+    params: uid
+    """
+    def get(self, request, format=None):
+        all_records = Record.objects.all()
+        for record in all_records:
+            record.is_active = False
+            record.save(update_fields=["is_active"])
+        return Response({"status": "ok"}, status=status.HTTP_200_OK)
+
+
