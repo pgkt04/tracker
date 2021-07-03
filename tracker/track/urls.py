@@ -20,8 +20,6 @@ urlpatterns = [
     # gets the record for the current user
     path('get-records/', views.GetActiveRecords.as_view()),
 
-    # TODO: disable all records for a speicifc user
-
     # reset a record to 0 given id
-    path('reset-record/', views.ResetRecord.as_view())
+    path('reset-records/', views.ResetRecords.as_view())
 ]

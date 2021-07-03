@@ -62,7 +62,6 @@ class AddRecord(APIView):
         serializer = RecordSerializer(data=request.data)
 
         if serializer.is_valid():
-            print("serializer data: ", serializer.validated_data)
             temp = {
                 "created": int(time.time()),
                 "ended": 0,
@@ -81,14 +80,8 @@ class AddRecord(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ResetRecord(APIView):
+class ResetRecords(APIView):
     """
-    TODO:
-    Disables the selected record, copies it and resets the time.
-
-    Depreciated:
-    Disables the latest record and assigns a new one
-
     TODO: set the ended time
     """
 
@@ -96,23 +89,27 @@ class ResetRecord(APIView):
         user = request.user
         existing = Record.objects.filter(uid=user.id, is_active=True)
 
-        for record in existing:
-            record.is_active = False
-            record.save(update_fields=['is_active'])
+        for i in existing:
+            print(i.topic)
 
-        # assign a new record and save it
-        temp = {
-            "created": int(time.time()),
-            "ended": 0,
-            "uid": user.id,
-            "is_active": True,
-        }
+            temp = {
+                "created": int(time.time()),
+                "ended": 0,
+                "uid": user.id,
+                "is_active": True,
+                "topic": i.topic
+            }
 
-        serializer = RecordSerializer(data=temp)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            serializer = RecordSerializer(data=temp)
+
+            if serializer.is_valid():
+                serializer.save()
+                i.is_active = False
+                i.save(update_fields=['is_active'])
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({'status': 'Resetted all records'}, status=status.HTTP_200_OK)
 
 
 class DisableAllRecords(APIView):
@@ -122,9 +119,6 @@ class DisableAllRecords(APIView):
 
     def get(self, request, format=None):
         Record.objects.all().update(is_active=False)
-        # for record in all_records:
-        #     record.is_active = False
-        #     record.save(update_fields=["is_active"])
         return Response({"status": "ok"}, status=status.HTTP_200_OK)
 
 
@@ -138,9 +132,8 @@ class DisableAllActiveRecords(APIView):
     """
 
     def get(self, request, format=None):
-        Record.objects.filter(uid=request.user.id).udate(is_active=False)
-        # old code
-        # for record in all_records:
-        #    record.is_active = False
-        #    record.save(update_fields=["is_active"])
+        all_records = Record.objects.filter(uid=request.user.id)
+        for record in all_records:
+            record.is_active = False
+            record.save(update_fields=["is_active"])
         return Response({"status": "ok"}, status=status.HTTP_200_OK)
