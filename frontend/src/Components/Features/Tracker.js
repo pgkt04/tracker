@@ -27,7 +27,10 @@ export class Tracker extends Component {
   //
   calcDeltaTime(data) {
     let ret = [];
-
+    let current_time = Math.round(Date.now() / 1000);
+    for (let i = 0; i < data.length; i++) {
+      ret.push(current_time - data[i].created);
+    }
     return ret;
   }
 
@@ -35,12 +38,13 @@ export class Tracker extends Component {
     let current_time = Math.round(Date.now() / 1000)
 
     // fetch the user latest starting time
+    // and calculate their delta time
+    //
     this.api.get("get-records/")
-
       .then(res => {
-        // calculate delta time
         this.setState({
           record_data: res.data,
+          delta_time: this.calcDeltaTime(res),
           has_loaded: true
         })
       })
@@ -48,19 +52,25 @@ export class Tracker extends Component {
         error => {
           console.log("something went wrong" + error)
         }
-      )
+      );
 
     this.updateTimer = setInterval(() => {
       current_time = Math.round(Date.now() / 1000)
-      this.setState({
-        delta_time: current_time - this.state.record_data.created,
-        has_loaded: true
-      })
+      this.setState(
+        {
+          delta_time: this.calcDeltaTime(this.state.record_data),
+          // deprecated:
+          // current_time - this.state.record_data.created,
+          has_loaded: true
+        });
+
+        console.log(this.state.delta_time);
     }, 1000);
+
   }
 
   componentWillUnmount() {
-    clearInterval(this.updateTimer)
+    clearInterval(this.updateTimer);
   }
 
   resetTimer() {
@@ -70,7 +80,7 @@ export class Tracker extends Component {
       })
       .catch(error => {
         console.log("failed to reset" + error)
-      })
+      });
   }
 
   redirectBack() {
