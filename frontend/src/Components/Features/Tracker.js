@@ -6,7 +6,7 @@ import { getAxiosInstance } from '../Api'
 export class Tracker extends Component {
 
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       record_data: {},
@@ -14,11 +14,13 @@ export class Tracker extends Component {
       has_loaded: false,
       token: localStorage.getItem('token'),
       redirect_back: false,
-    }
+    };
 
-    this.resetTimer = this.resetTimer.bind(this)
-    this.redirectBack = this.redirectBack.bind(this)
-    this.api = getAxiosInstance({ headers: { 'Authorization': `token ${this.state.token}` } })
+    this.resetTimer = this.resetTimer.bind(this);
+    this.redirectBack = this.redirectBack.bind(this);
+    this.api = getAxiosInstance(
+      { headers: { 'Authorization': `token ${this.state.token}` } }
+    );
   }
 
   componentDidMount() {
@@ -81,7 +83,8 @@ export class Tracker extends Component {
     let days = Math.floor(hours / 24);
     let remainingHrs = hours - (days * 24);
     let dayDisplay = days > 0 ? days + (days === 1 ? " day " : " days ") : "";
-    let hDisplay = remainingHrs > 0 ? remainingHrs + (remainingHrs === 1 ? " hour " : " hours ") : "";
+    let hDisplay = remainingHrs > 0 ? remainingHrs + (remainingHrs === 1 ?
+      " hour " : " hours ") : "";
     let mDisplay = minutes > 0 ? minutes + (minutes === 1 ? " minute " : " minutes ") : "";
     let sDisplay = seconds > 0 ? seconds + (seconds === 1 ? " second" : " seconds") : "";
 

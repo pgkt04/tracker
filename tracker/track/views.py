@@ -130,10 +130,10 @@ class DisableAllRecords(APIView):
     """
 
     def get(self, request, format=None):
-        all_records = Record.objects.all()
-        for record in all_records:
-            record.is_active = False
-            record.save(update_fields=["is_active"])
+        Record.objects.all().update(is_active=False)
+        # for record in all_records:
+        #     record.is_active = False
+        #     record.save(update_fields=["is_active"])
         return Response({"status": "ok"}, status=status.HTTP_200_OK)
 
 
@@ -145,11 +145,11 @@ class DisableAllActiveRecords(APIView):
 
     params: uid
     """
+
     def get(self, request, format=None):
-        all_records = Record.objects.all()
-        for record in all_records:
-            record.is_active = False
-            record.save(update_fields=["is_active"])
+        Record.objects.filter(uid=request.user.id).udate(is_active=False)
+        # old code
+        # for record in all_records:
+        #    record.is_active = False
+        #    record.save(update_fields=["is_active"])
         return Response({"status": "ok"}, status=status.HTTP_200_OK)
-
-

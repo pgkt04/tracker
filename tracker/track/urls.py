@@ -12,12 +12,16 @@ urlpatterns = [
     # inserts a new record with a topic
     path('add-record/', views.AddRecord.as_view()),
 
-    # disable a record
+    # disable all records
     path('disable-records/', views.DisableAllRecords.as_view()),
+
+    # TODO: disable a specific users record
 
     # gets the record for the current user
     path('get-records/', views.GetActiveRecords.as_view()),
 
-    # reset a record to 0
+    # TODO: disable all records for a speicifc user
+
+    # reset a record to 0 given id
     path('reset-record/', views.ResetRecord.as_view())
 ]
