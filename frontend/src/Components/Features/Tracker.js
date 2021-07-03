@@ -119,6 +119,8 @@ export class Tracker extends Component {
       return <Redirect to="/" />
     }
 
+    // TODO: add functionality for resetting stuff
+
     let display_all = this.state.delta_time.map((dt, key) => {
       let delta = Number(dt);
       let hours = Math.floor(delta / 3600);
