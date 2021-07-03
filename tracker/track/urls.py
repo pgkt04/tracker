@@ -15,8 +15,8 @@ urlpatterns = [
     # disable all records
     path('disable-records/', views.DisableAllRecords.as_view()),
 
-    # TODO: disable a specific users record
-    # path('delete-record/', views.delete)
+    # disable a specific users record
+    path('delete-record/', views.DisableRecord.as_view()),
 
     # gets the record for the current user
     path('get-records/', views.GetActiveRecords.as_view()),

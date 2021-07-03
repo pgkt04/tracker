@@ -30,8 +30,7 @@ class GetActiveRecords(APIView):
             return Response(all_records.data, status=status.HTTP_200_OK)
 
         # no data was found
-        return Response({"status": "No record exists"},
-                        status=status.HTTP_400_BAD_REQUEST)
+        return Response({}, status=status.HTTP_200_OK)
 
 
 class AddRecord(APIView):
@@ -55,6 +54,7 @@ class AddRecord(APIView):
                 "topic": serializer.validated_data['topic']
             }
             serializer = RecordSerializer(data=temp)
+
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -64,21 +64,27 @@ class AddRecord(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class DeleteRecord(APIView):
+class DisableRecord(APIView):
     """
     Deletes a record (sets to false) for a given user
     """
 
     def post(self, request, format=None):
         user = request.user
-        serializer = RecordSerializer(data=request.data)
 
-        if serializer.is_valid():
-            if 'id' in serializer.validated_data:
-                objects = Record.objects.filter(
-                    uid=user.id, id=request.data['id'])
+        if 'id' in request.data:
 
-        return Response({'status': ''}, status=status.HTTP_200_OK)
+            objects = Record.objects.filter(
+                uid=user.id, id=request.data['id'])
+
+            for i in objects:
+                i.is_active = False
+                i.save(update_fields=['is_active'])
+        else:
+            return Response({'status': 'id param not found'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({'status': 'successfully deleted'}, status=status.HTTP_200_OK)
 
 
 class ResetRecords(APIView):
@@ -89,6 +95,7 @@ class ResetRecords(APIView):
     def get(self, request, format=None):
         user = request.user
         existing = Record.objects.filter(uid=user.id, is_active=True)
+        ret = []
 
         for i in existing:
             temp = {
@@ -105,10 +112,11 @@ class ResetRecords(APIView):
                 serializer.save()
                 i.is_active = False
                 i.save(update_fields=['is_active'])
+                ret.append(temp)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response({'status': 'Resetted all records'}, status=status.HTTP_200_OK)
+        return Response(ret, status=status.HTTP_200_OK)
 
 
 class DisableAllRecords(APIView):

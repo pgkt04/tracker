@@ -11,19 +11,31 @@ export class Tracker extends Component {
 
     this.state = {
       topic: '',
-      record_data: {},
+      record_data: [],
       delta_time: [],
       topics: [],
       has_loaded: false,
       redirect_back: false,
     };
 
+    this.updateAllRecords = this.updateAllRecords.bind(this);
     this.resetTimer = this.resetTimer.bind(this);
     this.redirectBack = this.redirectBack.bind(this);
     this.topicHandler = this.topicHandler.bind(this);
     this.addTopic = this.addTopic.bind(this);
     this.deleteHandler = this.deleteHandler.bind(this);
-    this.updateRecords = this.updateRecords(this);
+  }
+
+  // handles the back button
+  //
+  redirectBack() {
+    this.setState({ redirect_back: true })
+  }
+
+  // handles the topic textbox
+  //
+  topicHandler(e) {
+    this.setState({ topic: e.target.value });
   }
 
   // calculates a list of delta time
@@ -37,69 +49,67 @@ export class Tracker extends Component {
     return ret;
   }
 
+  // calls the api to reset the timer
+  //
   resetTimer() {
     api.get("reset-records/")
       .then(res => {
-        this.setState({ record_data: res.data })
+        console.log(res.data)
+        this.setState({
+          record_data: res.data,
+          delta_time: this.calcDeltaTime(res.data)
+        });
       })
       .catch(error => {
-        console.log("failed to reset" + error)
+        console.log("failed to reset" + error);
       });
   }
 
-  redirectBack() {
-    this.setState({ redirect_back: true })
-  }
-
-  topicHandler(e) {
-    this.setState({
-      topic: e.target.value
-    })
-  }
-
-  updateRecords() {
-    // fetch the user latest starting time
-    // and calculate their delta time
-    //
+  updateAllRecords() {
     api.get("get-records/")
       .then(res => {
-        this.setState({
-          record_data: res.data,
-          delta_time: this.calcDeltaTime(res),
-          has_loaded: true
-        })
-      })
-      .catch(
-        error => {
-          console.log("something went wrong" + error)
+        if (res.data && res.data.length) {
+          this.setState({
+            record_data: res.data,
+            delta_time: this.calcDeltaTime(res.data),
+            has_loaded: true
+          });
+        } else {
+          this.setState({
+            record_data: [],
+            delta_time: []
+          });
         }
-      );
+      })
+      .catch(err => {
+        console.log(err.response);
+      });
   }
 
   // id is the id of the record we want to delete
   //
   deleteHandler(e, id) {
     e.preventDefault();
-
+    console.log(id);
     api.post('delete-record/', { 'id': id })
-      .then(response => { })
-      .catch(error => { });
-
-    this.updateRecords();
+      .then(response => {
+        this.updateAllRecords();
+      })
+      .catch(error => {
+        this.updateAllRecords();
+      });
   }
 
   addTopic(e) {
     e.preventDefault();
     api.post('add-record/', { 'topic': this.state.topic })
       .then(response => {
-        try {
-          let api_data = this.state.record_data;
-          api_data.push(response.data);
-          this.setState({
-            record_data: api_data,
-            delta_time: this.calcDeltaTime(api_data)
-          });
-        } catch (e) { }
+        let api_data = this.state.record_data;
+        api_data.push(response.data);
+        this.setState({
+          record_data: api_data,
+          delta_time: this.calcDeltaTime(api_data)
+        });
       })
       .catch(error => {
         console.log(error.response);
@@ -107,9 +117,9 @@ export class Tracker extends Component {
   }
 
   componentDidMount() {
-    let current_time = Math.round(Date.now() / 1000)
+    this.updateAllRecords();
 
-    this.updateRecords();
+    let current_time = Math.round(Date.now() / 1000);
 
     // update the timer every second
     //
