@@ -59,7 +59,6 @@ class AddRecord(APIView):
             if 'topic' not in serializer.validated_data:
                 return Response({'status': 'incorrect parameters'},
                                 status=status.HTTP_400_BAD_REQUEST)
-
             temp = {
                 "created": int(time.time()),
                 "ended": 0,
@@ -67,7 +66,6 @@ class AddRecord(APIView):
                 "is_active": True,
                 "topic": serializer.validated_data['topic']
             }
-
             serializer = RecordSerializer(data=temp)
             if serializer.is_valid():
                 serializer.save()
@@ -77,8 +75,9 @@ class AddRecord(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class DeleteRecord(APIView):
-  pass
+    pass
 
 
 class ResetRecords(APIView):
