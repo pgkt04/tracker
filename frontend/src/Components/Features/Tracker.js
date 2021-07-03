@@ -105,9 +105,6 @@ export class Tracker extends Component {
             record_data: api_data,
             delta_time: this.calcDeltaTime(api_data)
           });
-          // alert('added!');
-          // console.log(api_data);
-          // this.forceUpdate();
         } catch (e) { }
       })
       .catch(error => {
@@ -134,7 +131,10 @@ export class Tracker extends Component {
       let mDisplay = minutes > 0 ? minutes + (minutes === 1 ? " minute " : " minutes ") : "";
       let sDisplay = seconds > 1 ? seconds + (seconds === 1 ? " second" : " seconds") : "";
       let topic = this.state.record_data[key].topic;
-      return dt ? (<p key={key}> {dayDisplay} {hDisplay} {mDisplay} {sDisplay} {topic}</p>) : (null);
+      return dt ? (
+        <p key={key}>
+          {dayDisplay} {hDisplay} {mDisplay} {sDisplay} {topic}
+        </p>) : (null);
     });
 
     return (
