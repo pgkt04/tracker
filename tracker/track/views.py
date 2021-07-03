@@ -33,18 +33,6 @@ class GetActiveRecords(APIView):
         return Response({"status": "No record exists"},
                         status=status.HTTP_400_BAD_REQUEST)
 
-        # we need to create a new record and return that instead
-        # old deprecated code
-        #
-        # temp = {"created": int(time.time()), "ended": 0,
-        #         "uid": user.id, "is_active": True}
-        # serializer = RecordSerializer(data=temp)
-        # if serializer.is_valid():
-        #     serializer.save()
-        #     return Response(serializer.data, status=status.HTTP_200_OK)
-        # return Response(serializer.errors,
-        # status=status.HTTP_400_BAD_REQUEST)
-
 
 class AddRecord(APIView):
     """
