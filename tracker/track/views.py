@@ -65,12 +65,25 @@ class AddRecord(APIView):
 
 
 class DeleteRecord(APIView):
-    pass
+    """
+    Deletes a record (sets to false) for a given user
+    """
+
+    def post(self, request, format=None):
+        user = request.user
+        serializer = RecordSerializer(data=request.data)
+
+        if serializer.is_valid():
+            if 'id' in serializer.validated_data:
+                objects = Record.objects.filter(
+                    uid=user.id, id=request.data['id'])
+
+        return Response({'status': ''}, status=status.HTTP_200_OK)
 
 
 class ResetRecords(APIView):
     """
-    TODO: set the ended time
+    Resets all records and replaces them
     """
 
     def get(self, request, format=None):
@@ -78,8 +91,6 @@ class ResetRecords(APIView):
         existing = Record.objects.filter(uid=user.id, is_active=True)
 
         for i in existing:
-            print(i.topic)
-
             temp = {
                 "created": int(time.time()),
                 "ended": 0,
@@ -102,7 +113,7 @@ class ResetRecords(APIView):
 
 class DisableAllRecords(APIView):
     """
-    Sets all existing records as not active
+    Sets all active records as not active
     """
 
     def get(self, request, format=None):
