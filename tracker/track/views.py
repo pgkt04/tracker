@@ -53,12 +53,6 @@ class AddRecord(APIView):
 
     def post(self, request, format=None):
         user = request.user
-
-        # check if the user has a record
-        # TODO: change this
-        # it doesn't matter if the user already has a record
-        # we just need to create a new record given the new topic
-
         serializer = RecordSerializer(data=request.data)
 
         if serializer.is_valid():
