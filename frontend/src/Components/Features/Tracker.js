@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react'
 import { Button, Col, Row, Form } from 'react-bootstrap'
-import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider';
 import { Redirect } from 'react-router-dom'
 import { auth_api as api } from '../Api'
 
