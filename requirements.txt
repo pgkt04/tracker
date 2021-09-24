@@ -17,6 +17,6 @@ pylint-django==2.4.4
 pylint-plugin-utils==0.6
 pytz==2020.5
 six==1.15.0
-sqlparse==0.4.1
+sqlparse==0.4.2
 toml==0.10.2
 wrapt==1.12.1
